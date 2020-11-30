@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<style>
+body {
+	background-color: #FBFAED;
+}
+</style>
+<body>
+<center><h1>EN.601.490/690 HCI Project 2</h1></center>
+<center><h3>Team Members: Cindy Koo, Stephan Kemper, & Matthew Lombardo</h3></center>
+<p>Amidst the United States 2020 Presidential Election...</p>
+</body>
+
+
+<meta charset="utf-8">
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.dropbtn {
+  background-color: #2980B9;
+  color: white;
+  padding: 12px;
+  font-size: 12px;
+  border: 1px;
+  cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #2980B9;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown a:hover {background-color: #ddd;}
+
+.show {display: block;}
+</style>
+</head>
+<body>
+
+<h2>Voter Registration Data</h2>
+<p>North Carolina is our favorite state, so here are some cool maps about it.</p>
+
+<div class="dropdown">
+  <button onclick="myFunction()" class="dropbtn">Please select map!</button>
+  <div id="myDropdown" class="dropdown-content">
+    <a href="#home" onclick=makeMap('red')>Red Map</a>
+    <a href="#about" onclick=makeMap('blue')>Blue Map</a>
+    <a href="#contact" onclick=makeMap('green')>Green Map</a>
+  </div>
+</div>
+
+<script>
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+
+
+</script>
+
+
+<p><!-- Blank so button formats correctly --> </p>
+
+
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+
+<!-- Create an element where the map will take place -->
+<svg id="my_dataviz" width="400" height="300"></svg>
+<script>
+function makeMap(color) {
+  // The svg
+  var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height");
+
+  // Map and projection
+  var path = d3.geoPath();
+  var projection = d3.geoMercator()
+    .scale(70)
+    .center([0,20])
+    .translate([width / 2, height / 2]);
+
+  // Data and color scale
+  var data = d3.map();
+  if (color=='red') {
+  var colorScale = d3.scaleThreshold()
+    .domain([100000, 1000000, 10000000, 30000000, 100000000, 500000000])
+    .range(d3.schemeReds[7]);
+    }
+    else if (color=='blue') {
+    var colorScale = d3.scaleThreshold()
+    .domain([100000, 1000000, 10000000, 30000000, 100000000, 500000000])
+    .range(d3.schemeBlues[7]);
+    }
+    else if (color=='green') {
+    var colorScale = d3.scaleThreshold()
+    .domain([100000, 1000000, 10000000, 30000000, 100000000, 500000000])
+    .range(d3.schemeGreens[7]);
+    }
+
+
+
+  // Load external data and boot
+  d3.queue()
+    .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
+    .defer(d3.csv, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world_population.csv", function(d) { data.set(d.code, +d.pop); })
+    .await(ready);
+
+
+  function ready(error, topo) {
+
+    // Draw the map
+    svg.append("g")
+      .selectAll("path")
+      .data(topo.features)
+      .enter()
+      .append("path")
+        // draw each country
+        .attr("d", d3.geoPath()
+          .projection(projection)
+        )
+        // set the color of each country
+        .attr("fill", function (d) {
+          d.total = data.get(d.id) || 0;
+          return colorScale(d.total);
+        })
+      }
+
+}
+</script>
+
+<h2> Voting History </h2>
+
+<p> Here are some fun bar graphs linking voting data to certain demographics </p>
+
+
+
+
+
+
+
+
+
+
+</html>
