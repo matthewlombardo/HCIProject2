@@ -96,10 +96,10 @@ window.onclick = function(event) {
 <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
 <p></p>
 <!-- Create an element where the map will take place -->
+
 <svg id="my_dataviz" width="400" height="400"></svg>
 <script>
 function makeMap1(color) {
-
   // The svg
   var svg = d3.select("#my_dataviz")
   //var svg = d3.select("svg"),
@@ -168,9 +168,9 @@ function makeMap1(color) {
 <div class="dropdown">
   <button onclick="myFunction2()" class="dropbtn">Please select map!</button>
   <div id="myDropdown2" class="dropdown-content">
-    <a href="#home" onclick=makeMap1('red')>Red Map 2</a>
-    <a href="#about" onclick=makeMap1('blue')>Blue Map 2</a>
-    <a href="#contact" onclick=makeMap1('green')>Green Map 2</a>
+    <a href="#home" onclick=makeMap2('red')>Red Map 2</a>
+    <a href="#about" onclick=makeMap2('blue')>Blue Map 2</a>
+    <a href="#contact" onclick=makeMap2('green')>Green Map 2</a>
   </div>
 </div>
 <script>
@@ -203,12 +203,12 @@ window.onclick = function(event) {
 <svg id="my_dataviz2" width="400" height="400"></svg>
 <script>
 function makeMap2(color) {
-	d3.select("svg").remove();
+
   // The svg
   var svg = d3.select("#my_dataviz2")
   //var svg2 = d3.select("svg2"),
-    width = +svg2.attr("width"),
-    height = +svg2.attr("height");
+    width = +svg.attr("width"),
+    height = +svg.attr("height");
 
   // Map and projection
   var path = d3.geoPath();
@@ -246,7 +246,7 @@ function makeMap2(color) {
   function ready(error, topo) {
 
     // Draw the map
-    svg2.append("g")
+    svg.append("g")
       .selectAll("path")
       .data(topo.features)
       .enter()
