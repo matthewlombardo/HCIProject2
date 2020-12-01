@@ -101,7 +101,8 @@ window.onclick = function(event) {
 function makeMap1(color) {
 
   // The svg
-  var svg = d3.select("svg"),
+  var svg = d3.select("#my_dataviz")
+  //var svg = d3.select("svg"),
     width = +svg.attr("width"),
     height = +svg.attr("height");
 
@@ -192,7 +193,6 @@ window.onclick = function(event) {
 }
 </script>
 
-
 <!-- Load d3.js -->
 <script src="https://d3js.org/d3.v4.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
@@ -205,7 +205,8 @@ window.onclick = function(event) {
 function makeMap2(color) {
 	d3.select("svg").remove();
   // The svg
-  var svg2 = d3.select("svg2"),
+  var svg = d3.select("#my_dataviz2")
+  //var svg2 = d3.select("svg2"),
     width = +svg2.attr("width"),
     height = +svg2.attr("height");
 
@@ -274,11 +275,225 @@ function makeMap2(color) {
 
 <p>This should probably be the map section, but I'm putting the bar graphs here. We can switch accordingly later. </p>
 
+<div style=float.left>
+
+<div class="dropdown">
+  <button onclick="myFunction3()" class="dropbtn">Please select chart color!</button>
+  <div id="myDropdown3" class="dropdown-content">
+    <a href="#home" onclick=colorGraph1('one')>Color Scheme 1</a>
+    <a href="#about" onclick=colorGraph1('two')>Color Scheme 2</a>
+    <a href="#contact" onclick=colorGraph1('three')>Color Scheme 3</a>
+  </div>
+</div>
+<script>
+function myFunction3() {
+  document.getElementById("myDropdown3").classList.toggle("show");
+}
+</script>
+<p> <!--blank line to put button on top --> </p>
+
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v4.js"></script>
+
+<!-- Create a div where the graph will take place -->
+<svg id="my_dataviz3" width="400" height="400"></svg>
+<script>
+function colorGraph1(scheme) {
+
+// set the dimensions and margins of the graph
+var margin = {top: 10, right: 30, bottom: 20, left: 50},
+    width = 460 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+var svg = d3.select("#my_dataviz3")
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+// Parse the Data
+d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_stacked.csv", function(data) {
+
+  // List of subgroups = header of the csv files = soil condition here
+  var subgroups = data.columns.slice(1)
+
+  // List of groups = species here = value of the first column called group -> I show them on the X axis
+  var groups = d3.map(data, function(d){return(d.group)}).keys()
+
+  // Add X axis
+  var x = d3.scaleBand()
+      .domain(groups)
+      .range([0, width])
+      .padding([0.2])
+  svg.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x).tickSizeOuter(0));
+
+  // Add Y axis
+  var y = d3.scaleLinear()
+    .domain([0, 60])
+    .range([ height, 0 ]);
+  svg.append("g")
+    .call(d3.axisLeft(y));
+
+// Change graph color
+if (scheme=='one') {
+var color = d3.scaleOrdinal()
+  .domain(subgroups)
+  .range(['#e41a1c','#377eb8','#4daf4a'])
+}
+else if (scheme=='two') {
+var color = d3.scaleOrdinal()
+  .domain(subgroups)
+  .range(['#e41a1c','#fa315d','#4daf4a'])
+}
+else if (scheme=='three') {
+var color = d3.scaleOrdinal()
+  .domain(subgroups)
+  .range(['#e41a1c','#377eb8','#002345'])
+}
+
+  //stack the data? --> stack per subgroup
+  var stackedData = d3.stack()
+    .keys(subgroups)
+    (data)
+
+  // Show the bars
+  svg.append("g")
+    .selectAll("g")
+    // Enter in the stack data = loop key per key = group per group
+    .data(stackedData)
+    .enter().append("g")
+      .attr("fill", function(d) { return color(d.key); })
+      .selectAll("rect")
+      // enter a second time = loop subgroup per subgroup to add all rectangles
+      .data(function(d) { return d; })
+      .enter().append("rect")
+        .attr("x", function(d) { return x(d.data.group); })
+        .attr("y", function(d) { return y(d[1]); })
+        .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+        .attr("width",x.bandwidth())
+})
+}
+</script>
+</div>
 
 
+<div style=float.right>
+<div class="dropdown">
+  <button onclick="myFunction4()" class="dropbtn">Please select chart color!</button>
+  <div id="myDropdown4" class="dropdown-content">
+    <a href="#home" onclick=colorGraph2('one')>Color Scheme 1</a>
+    <a href="#about" onclick=colorGraph2('two')>Color Scheme 2</a>
+    <a href="#contact" onclick=colorGraph2('three')>Color Scheme 3</a>
+  </div>
+</div>
+<script>
+function myFunction4() {
+  document.getElementById("myDropdown4").classList.toggle("show");
+}
+</script>
+<p> <!--blank line to put button on top --> </p>
+
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v4.js"></script>
+
+<!-- Create a div where the graph will take place -->
+<svg id="my_dataviz4" width="400" height="400"></svg>
+<script>
+function colorGraph2(scheme) {
+
+// set the dimensions and margins of the graph
+var margin = {top: 10, right: 30, bottom: 20, left: 50},
+    width = 460 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+var svg = d3.select("#my_dataviz4")
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+// Parse the Data
+d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_stacked.csv", function(data) {
+
+  // List of subgroups = header of the csv files = soil condition here
+  var subgroups = data.columns.slice(1)
+
+  // List of groups = species here = value of the first column called group -> I show them on the X axis
+  var groups = d3.map(data, function(d){return(d.group)}).keys()
+
+  // Add X axis
+  var x = d3.scaleBand()
+      .domain(groups)
+      .range([0, width])
+      .padding([0.2])
+  svg.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x).tickSizeOuter(0));
+
+  // Add Y axis
+  var y = d3.scaleLinear()
+    .domain([0, 60])
+    .range([ height, 0 ]);
+  svg.append("g")
+    .call(d3.axisLeft(y));
+
+// Change graph color
+if (scheme=='one') {
+var color = d3.scaleOrdinal()
+  .domain(subgroups)
+  .range(['#e41a1c','#377eb8','#4daf4a'])
+}
+else if (scheme=='two') {
+var color = d3.scaleOrdinal()
+  .domain(subgroups)
+  .range(['#e41a1c','#fa315d','#4daf4a'])
+}
+else if (scheme=='three') {
+var color = d3.scaleOrdinal()
+  .domain(subgroups)
+  .range(['#e41a1c','#377eb8','#002345'])
+}
+
+  //stack the data? --> stack per subgroup
+  var stackedData = d3.stack()
+    .keys(subgroups)
+    (data)
+
+  // Show the bars
+  svg.append("g")
+    .selectAll("g")
+    // Enter in the stack data = loop key per key = group per group
+    .data(stackedData)
+    .enter().append("g")
+      .attr("fill", function(d) { return color(d.key); })
+      .selectAll("rect")
+      // enter a second time = loop subgroup per subgroup to add all rectangles
+      .data(function(d) { return d; })
+      .enter().append("rect")
+        .attr("x", function(d) { return x(d.data.group); })
+        .attr("y", function(d) { return y(d[1]); })
+        .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+        .attr("width",x.bandwidth())
+})
+}
+
+</script>
+</div>
+
+<hr style="clear:both;">
 
 
+<h2>Part III: Distance to Polling Places</h2>
 
+<p>Bubbles!</p>
 
 
 
