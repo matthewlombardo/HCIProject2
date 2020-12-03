@@ -147,20 +147,431 @@ body {
   Database. Thus, we decided to perform our data analysis on the wonderful state of North Carolina.
 </p>
 
+<!-- -->
+<!-- BAR GRAPHS -->
+<!-- -->
+
+<h2>Part I: Voting History & Demographic Information</h2>
+<p>
+  We began our analysis with the topic of voter demographic information and voter's registered party for the 2020
+  General Election in North Carolina. With findings from articles that state the discrepancies in voter turnout levels
+  between different demographic groups, we were interested to see if this applied to North Carolina too.
+</p>
+<p>
+  We chose three demographic variables (age, gender, and race) and compared the number of voters in each of the
+  sub-categories of a variable. For reference, and to make the data even more interesting, we included data
+  regarding registered political party.  In order for ease of comparison between the categories, we used a stacked
+  bar graph that allows for quick comprehension of the data.
+</p>
+<p>
+  What we found in relation to age groups was a significant clustering of high votes between the ages of 20 to 60.
+  In contrast, we see the numbers drop for individuals in their 70s and 80s.  While we might explain that away with the
+  fact that here are many fewer of these voters, we also observe low numbers of votes for individuals in their early adulthood.
+  These low numbers could be due to a number of factors, such as inaccessibility to transportation to polling booths,
+  education levels, and difficulty in voter registration.
+</p>
+<p>
+  In terms of voter sex and turnout rate, we didn’t find much that was surprising, as there seemed
+  to be a smaller margin of difference for the total votes between the male and female voters. What intrigued us most
+  was the data on race and voter turnout rates. The race of the voters is indicated on the X-axis of the plot; the key is
+  below. There is a huge difference between the amount of White and Black voters. Even taking into account the general
+  race demographics of North Carolina (reported to be 63% White and 21% Black), we can observe a
+  drastically low turnout rate for Black voters.
+</p>
+
+<div id="barGraphKey" style="clear: both; width: 500px; margin-left: auto; margin-right: auto;">
+  <h3>Table Legends</h3>
+  <table style="float: left; top: 30px; left: 0px; border: none; font-size: .8em; width: 200px;">
+    <tr>
+      <td>W</td>
+      <td>White</td>
+    </tr>
+    <tr>
+      <td>B</td>
+      <td>Black or African American</td>
+    </tr>
+    <tr>
+      <td>A</td>
+      <td>Asian</td>
+    </tr>
+    <tr>
+      <td>IA/AN</td>
+      <td>Indian American or Alaska Native</td>
+    </tr>
+    <tr>
+      <td>U</td>
+      <td>Undesignated</td>
+    </tr>
+    <tr>
+      <td>2+</td>
+      <td>Two or More Races</td>
+    </tr>
+    <tr>
+      <td>O</td>
+      <td>Other</td>
+    </tr>
+    <tr>
+      <td>NH/PI</td>
+      <td>Native Hawaiian or Pacific Islander</td>
+    </tr>
+  </table>
+  <table style="float: right; border: none; font-size: .8em; width: 200px; margin-left: 40px;">
+    <tr>
+      <td>Red</td>
+      <td>Republican</td>
+    </tr>
+    <tr>
+      <td>Blue</td>
+      <td>Democratic</td>
+    </tr>
+    <tr>
+      <td>Black</td>
+      <td>Libertarian</td>
+    </tr>
+    <tr>
+      <td>Orange</td>
+      <td>Unaffiliated</td>
+    </tr>
+    <tr>
+      <td>Yellow</td>
+      <td>Constitution</td>
+    </tr>
+    <tr>
+      <td>Green</td>
+      <td>Green</td>
+    </tr>
+  </table>
+</div>
+
+<div style="float:left; clear: both">
+<div class="dropdown">
+  <button onclick="myFunction3()" class="dropbtn">Please select demographic &#9660;</button>
+  <div id="myDropdown3" class="dropdown-content">
+    <a onclick="colorGraph1('age')">Age Group</a>
+    <a onclick="colorGraph1('sex')">Sex</a>
+    <a onclick="colorGraph1('race')">Race</a>
+  </div>
+</div>
+<script>
+function myFunction3() {
+  document.getElementById("myDropdown3").classList.toggle("show");
+}
+</script>
+<p> <!--blank line to put button on top --> </p>
+
+
+<!-- Create a div where the graph will take place -->
+<svg id="my_dataviz3" width="550" height="400"></svg>
+<script>
+function colorGraph1(demographic) {
+
+// set the dimensions and margins of the graph
+var margin = {top: 10, right: 30, bottom: 20, left: 70},
+    width = 460 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+$("#my_dataviz3").empty();
+var svg = d3.select("#my_dataviz3")
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+
+// Parse the Data
+var urls = ["https://raw.githubusercontent.com/matthewlombardo/HCIProject2/master/graph1AGE.csv","https://raw.githubusercontent.com/matthewlombardo/HCIProject2/master/graph1SEX.csv","https://raw.githubusercontent.com/matthewlombardo/HCIProject2/master/graph1RACE.csv"];
+var filename;
+if (demographic=='age') {
+	filename = urls[0];
+}
+else if (demographic=='sex'){
+	filename = urls[1];
+}
+else if (demographic=='race'){
+	filename = urls[2];
+}
+
+d3.csv(filename, function(data) {
+
+  // List of subgroups = header of the csv files = soil condition here
+  var subgroups = data.columns.slice(1)
+  console.log(subgroups)
+
+  // List of groups = species here = value of the first column called group -> I show them on the X axis
+  var groups;
+  var domain;
+  if (demographic=='age') {
+	  groups = d3.map(data, function(d){return(d.AGEGROUP)}).keys()
+	  domain = 1000000;
+  }
+  else if (demographic=='sex'){
+	  groups = d3.map(data, function(d){return(d.SEX)}).keys()
+	  domain = 2500000;
+  }
+  else if (demographic=='race'){
+	  groups = d3.map(data, function(d){return(d.RACE)}).keys()
+	  domain = 3500000;
+  }
+  //var groups = d3.map(data, function(d){return(d.AGEGROUP)}).keys()
+  //console.log(groups)
+
+  // Add X axis
+  var x = d3.scaleBand()
+      .domain(groups)
+      .range([0, width+20])
+      .padding([0.2])
+  svg.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x).tickSizeOuter(0));
+
+  //
+  // Add Y axis
+  var y = d3.scaleLinear()
+    .domain([0, domain])
+    .range([ height, 0 ]);
+  svg.append("g")
+    .call(d3.axisLeft(y));
+
+	var color = d3.scaleOrdinal()
+	  .domain(subgroups)
+	  .range(['red','blue','black','orange','yellow','green'])
+
+
+  //stack the data? --> stack per subgroup
+  var stackedData = d3.stack()
+    .keys(subgroups)
+    (data)
+
+  // Show the bars
+  if (demographic=='age') {
+	  svg.append("g")
+	    .selectAll("g")
+	    // Enter in the stack data = loop key per key = group per group
+	    .data(stackedData)
+	    .enter().append("g")
+	      .attr("fill", function(d) { return color(d.key); })
+	      .selectAll("rect")
+	      // enter a second time = loop subgroup per subgroup to add all rectangles
+	      .data(function(d) { return d; })
+	      .enter().append("rect")
+	        .attr("x", function(d) { return x(d.data.AGEGROUP); })
+	        .attr("y", function(d) { return y(d[1]); })
+	        .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+	        .attr("width",x.bandwidth())
+	}
+	else if (demographic=='sex') {
+  	  svg.append("g")
+  	    .selectAll("g")
+  	    // Enter in the stack data = loop key per key = group per group
+  	    .data(stackedData)
+  	    .enter().append("g")
+  	      .attr("fill", function(d) { return color(d.key); })
+  	      .selectAll("rect")
+  	      // enter a second time = loop subgroup per subgroup to add all rectangles
+  	      .data(function(d) { return d; })
+  	      .enter().append("rect")
+  	        .attr("x", function(d) { return x(d.data.SEX); })
+  	        .attr("y", function(d) { return y(d[1]); })
+  	        .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+  	        .attr("width",x.bandwidth())
+  	}
+	else  if (demographic=='race') {
+  	  svg.append("g")
+  	    .selectAll("g")
+  	    // Enter in the stack data = loop key per key = group per group
+  	    .data(stackedData)
+  	    .enter().append("g")
+  	      .attr("fill", function(d) { return color(d.key); })
+  	      .selectAll("rect")
+  	      // enter a second time = loop subgroup per subgroup to add all rectangles
+  	      .data(function(d) { return d; })
+  	      .enter().append("rect")
+  	        .attr("x", function(d) { return x(d.data.RACE); })
+  	        .attr("y", function(d) { return y(d[1]); })
+  	        .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+  	        .attr("width",x.bandwidth())
+  	}
+
+})
+}
+</script>
+</div>
+
+<div style="float:right">
+<div class="dropdown">
+  <button onclick="myFunction4()" class="dropbtn">Please select demographic &#9660;</button>
+  <div id="myDropdown4" class="dropdown-content">
+    <a onclick="colorGraph2('age')">Age Group</a>
+    <a onclick="colorGraph2('sex')">Sex</a>
+    <a onclick="colorGraph2('race')">Race</a>
+  </div>
+</div>
+<script>
+function myFunction4() {
+  document.getElementById("myDropdown4").classList.toggle("show");
+}
+</script>
+<p> <!--blank line to put button on top --> </p>
+
+<!-- Create a div where the graph will take place -->
+<svg id="my_dataviz4" width="550" height="400"></svg>
+<script>
+function colorGraph2(demographic) {
+
+// set the dimensions and margins of the graph
+var margin = {top: 10, right: 30, bottom: 20, left: 70},
+    width = 460 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+$("#my_dataviz4").empty();
+var svg = d3.select("#my_dataviz4")
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+
+// Parse the Data
+var urls = ["https://raw.githubusercontent.com/matthewlombardo/HCIProject2/master/graph1AGE.csv","https://raw.githubusercontent.com/matthewlombardo/HCIProject2/master/graph1SEX.csv","https://raw.githubusercontent.com/matthewlombardo/HCIProject2/master/graph1RACE.csv"];
+var filename;
+if (demographic=='age') {
+	filename = urls[0];
+}
+else if (demographic=='sex'){
+	filename = urls[1];
+}
+else if (demographic=='race'){
+	filename = urls[2];
+}
+
+d3.csv(filename, function(data) {
+
+  // List of subgroups = header of the csv files = soil condition here
+  var subgroups = data.columns.slice(1)
+  console.log(subgroups)
+
+  // List of groups = species here = value of the first column called group -> I show them on the X axis
+  var groups;
+  var domain;
+  if (demographic=='age') {
+	  groups = d3.map(data, function(d){return(d.AGEGROUP)}).keys()
+	  domain = 1000000;
+  }
+  else if (demographic=='sex'){
+	  groups = d3.map(data, function(d){return(d.SEX)}).keys()
+	  domain = 2500000;
+  }
+  else if (demographic=='race'){
+	  groups = d3.map(data, function(d){return(d.RACE)}).keys()
+	  domain = 3500000;
+  }
+  //var groups = d3.map(data, function(d){return(d.AGEGROUP)}).keys()
+  //console.log(groups)
+
+  // Add X axis
+  var x = d3.scaleBand()
+      .domain(groups)
+      .range([0, width+20])
+      .padding([0.2])
+  svg.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x).tickSizeOuter(0));
+
+  //
+  // Add Y axis
+  var y = d3.scaleLinear()
+    .domain([0, domain])
+    .range([ height, 0 ]);
+  svg.append("g")
+    .call(d3.axisLeft(y));
+
+	var color = d3.scaleOrdinal()
+	  .domain(subgroups)
+	  .range(['red','blue','black','orange','yellow','green'])
+
+
+  //stack the data? --> stack per subgroup
+  var stackedData = d3.stack()
+    .keys(subgroups)
+    (data)
+
+  // Show the bars
+  if (demographic=='age') {
+	  svg.append("g")
+	    .selectAll("g")
+	    // Enter in the stack data = loop key per key = group per group
+	    .data(stackedData)
+	    .enter().append("g")
+	      .attr("fill", function(d) { return color(d.key); })
+	      .selectAll("rect")
+	      // enter a second time = loop subgroup per subgroup to add all rectangles
+	      .data(function(d) { return d; })
+	      .enter().append("rect")
+	        .attr("x", function(d) { return x(d.data.AGEGROUP); })
+	        .attr("y", function(d) { return y(d[1]); })
+	        .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+	        .attr("width",x.bandwidth())
+	}
+	else if (demographic=='sex') {
+  	  svg.append("g")
+  	    .selectAll("g")
+  	    // Enter in the stack data = loop key per key = group per group
+  	    .data(stackedData)
+  	    .enter().append("g")
+  	      .attr("fill", function(d) { return color(d.key); })
+  	      .selectAll("rect")
+  	      // enter a second time = loop subgroup per subgroup to add all rectangles
+  	      .data(function(d) { return d; })
+  	      .enter().append("rect")
+  	        .attr("x", function(d) { return x(d.data.SEX); })
+  	        .attr("y", function(d) { return y(d[1]); })
+  	        .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+  	        .attr("width",x.bandwidth())
+  	}
+	else  if (demographic=='race') {
+  	  svg.append("g")
+  	    .selectAll("g")
+  	    // Enter in the stack data = loop key per key = group per group
+  	    .data(stackedData)
+  	    .enter().append("g")
+  	      .attr("fill", function(d) { return color(d.key); })
+  	      .selectAll("rect")
+  	      // enter a second time = loop subgroup per subgroup to add all rectangles
+  	      .data(function(d) { return d; })
+  	      .enter().append("rect")
+  	        .attr("x", function(d) { return x(d.data.RACE); })
+  	        .attr("y", function(d) { return y(d[1]); })
+  	        .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+  	        .attr("width",x.bandwidth())
+  	}
+
+})
+}
+</script>
+</div>
+
+
+<hr style="clear:both;">
 
 <!-- -->
 <!-- MAPS -->
 <!-- -->
 
-<h2>Part I: Racial/Ethnic Background & Turnout Rate</h2>
+<h2>Part II: Racial/Ethnic Background & Turnout Rate</h2>
 <p>
   Next, we turned to examine the theme of racial background and turnout rate a little more closely. For this
   analysis, we used a choropleth map, which is a data analysis method that shows different areas in the map in varying
-   shades or colors that are proportional to a variable. We decided to include three variables that the user can choose
-    to view for this visualization. In order to allow for ease of comparison between the variables, we included two maps
-     side by side for easy access. The blank map divides North Carolina into its counties, as shown by
-     the borders. By clicking on different options above the map, the user can choose to view the map
-     according to the desired variable.
+  shades or colors that are proportional to a variable. We decided to include three variables that the user can choose
+  to view for this visualization. In order to allow for ease of comparison between the variables, we included two maps
+  side by side for easy access. The map divides North Carolina into its counties, as shown by
+  the borders. By clicking on different options above the map, the user can choose to view the map
+  according to the desired variable.
 </p>
 <p>
   Our data colors each county by one of several variables:
@@ -491,17 +902,16 @@ function makeMap1(color) {
 	  		}
         })
       }
-
 }
 </script>
 </div>
 
 <div style="float:right">
 <div class="dropdown">
-  <button onclick="myFunction2()" class="dropbtn">Please select map!</button>
+  <button onclick="myFunction2()" class="dropbtn">Please select map &#9660;</button>
   <div id="myDropdown2" class="dropdown-content">
-    <a href="#home" onclick=makeMap2('red')>Red Map</a>
-    <a href="#about" onclick=makeMap2('blue')>Blue Map</a>
+    <a onclick=makeMap2('red')>Red Map</a>
+    <a onclick=makeMap2('blue')>Blue Map</a>
   </div>
 </div>
 <script>
@@ -816,418 +1226,6 @@ function makeMap2(color) {
 
 
 <p><!-- Blank so button formats correctly --> </p>
-
-<!-- -->
-<!-- BAR GRAPHS -->
-<!-- -->
-
-<h2>Part II: Voting History & Demographic Information</h2>
-<p>
-  We began our analysis with the topic of voter demographic information and voter's registered party for the 2020
-  General Election in North Carolina. With findings from articles that state the discrepancies in voter turnout rates between different
-  demographic groups, we were interested to see if this applied to North Carolina too.
-</p>
-<p>
-  We chose three demographic variables (age, gender, and race) and compared the number of voters in each of the
-  sub-categories of a variable. For reference, and to make the data even more interesting, we included data
-  regarding registered political party.  In order for ease of comparison between the categories, we used a stacked
-  bar graph that allows for quick comprehension of the data.
-</p>
-<p>
-  What we found in relation to age groups was a significant clustering of high votes between the ages of 20 to 60.
-  In contrast, we see the numbers drop for individuals in their 70s and 80s.  While we might explain that away with the
-  fact that here are many fewer of these voters, we also observe low numbers of votes for individuals in their early adulthood.
-  These low numbers could be due to a number of factors, such as inaccessibility to transportation to polling booths,
-  education levels, and difficulty in voter registration.
-</p>
-<p>
-  In terms of voter sex and turnout rate, we didn’t find much that was surprising, as there seemed
-  to be a smaller margin of difference for the total votes between the male and female voters. What intrigued us most
-  was the data on race and voter turnout rates. The race of the voters is indicated on the X-axis of the plot; the key is
-  below. There is a huge difference between the amount of White and Black voters. Even taking into account the general
-  race demographics of North Carolina (reported to be 63% White and 21% Black), we can observe a
-  drastically low turnout rate for Black voters.
-</p>
-
-<div id="barGraphKey" style="clear: both; width: 500px; margin-left: auto; margin-right: auto;">
-  <h3>Table Legends</h3>
-  <table style="float: left; top: 30px; left: 0px; border: none; font-size: .8em; width: 200px;">
-    <tr>
-      <td>W</td>
-      <td>White</td>
-    </tr>
-    <tr>
-      <td>B</td>
-      <td>Black or African American</td>
-    </tr>
-    <tr>
-      <td>A</td>
-      <td>Asian</td>
-    </tr>
-    <tr>
-      <td>IA/AN</td>
-      <td>Indian American or Alaska Native</td>
-    </tr>
-    <tr>
-      <td>U</td>
-      <td>Undesignated</td>
-    </tr>
-    <tr>
-      <td>2+</td>
-      <td>Two or More Races</td>
-    </tr>
-    <tr>
-      <td>O</td>
-      <td>Other</td>
-    </tr>
-    <tr>
-      <td>NH/PI</td>
-      <td>Native Hawaiian or Pacific Islander</td>
-    </tr>
-  </table>
-  <table style="float: right; border: none; font-size: .8em; width: 200px; margin-left: 40px;">
-    <tr>
-      <td>Red</td>
-      <td>Republican</td>
-    </tr>
-    <tr>
-      <td>Blue</td>
-      <td>Democratic</td>
-    </tr>
-    <tr>
-      <td>Green</td>
-      <td>Libertarian</td>
-    </tr>
-    <tr>
-      <td>Orange</td>
-      <td>Unaffiliated</td>
-    </tr>
-    <tr>
-      <td>Yellow</td>
-      <td>Constitution</td>
-    </tr>
-    <tr>
-      <td>Black</td>
-      <td>Green</td>
-    </tr>
-  </table>
-</div>
-
-<div style="float:left; clear: both">
-<div class="dropdown">
-  <button onclick="myFunction3()" class="dropbtn">Please select demographic &#9660;</button>
-  <div id="myDropdown3" class="dropdown-content">
-    <a onclick="colorGraph1('age')">Age Group</a>
-    <a onclick="colorGraph1('sex')">Sex</a>
-    <a onclick="colorGraph1('race')">Race</a>
-  </div>
-</div>
-<script>
-function myFunction3() {
-  document.getElementById("myDropdown3").classList.toggle("show");
-}
-</script>
-<p> <!--blank line to put button on top --> </p>
-
-
-<!-- Create a div where the graph will take place -->
-<svg id="my_dataviz3" width="450" height="400"></svg>
-<script>
-function colorGraph1(demographic) {
-
-// set the dimensions and margins of the graph
-var margin = {top: 10, right: 30, bottom: 20, left: 50},
-    width = 460 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
-
-// append the svg object to the body of the page
-$("#my_dataviz3").empty();
-var svg = d3.select("#my_dataviz3")
-  .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
-
-
-// Parse the Data
-var urls = ["https://raw.githubusercontent.com/matthewlombardo/HCIProject2/master/graph1AGE.csv","https://raw.githubusercontent.com/matthewlombardo/HCIProject2/master/graph1SEX.csv","https://raw.githubusercontent.com/matthewlombardo/HCIProject2/master/graph1RACE.csv"];
-var filename;
-if (demographic=='age') {
-	filename = urls[0];
-}
-else if (demographic=='sex'){
-	filename = urls[1];
-}
-else if (demographic=='race'){
-	filename = urls[2];
-}
-
-d3.csv(filename, function(data) {
-
-  // List of subgroups = header of the csv files = soil condition here
-  var subgroups = data.columns.slice(1)
-  console.log(subgroups)
-
-  // List of groups = species here = value of the first column called group -> I show them on the X axis
-  var groups;
-  var domain;
-  if (demographic=='age') {
-	  groups = d3.map(data, function(d){return(d.AGEGROUP)}).keys()
-	  domain = 1000000;
-  }
-  else if (demographic=='sex'){
-	  groups = d3.map(data, function(d){return(d.SEX)}).keys()
-	  domain = 2500000;
-  }
-  else if (demographic=='race'){
-	  groups = d3.map(data, function(d){return(d.RACE)}).keys()
-	  domain = 3500000;
-  }
-  //var groups = d3.map(data, function(d){return(d.AGEGROUP)}).keys()
-  //console.log(groups)
-
-  // Add X axis
-  var x = d3.scaleBand()
-      .domain(groups)
-      .range([0, width+20])
-      .padding([0.2])
-  svg.append("g")
-    .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x).tickSizeOuter(0));
-
-  //
-  // Add Y axis
-  var y = d3.scaleLinear()
-    .domain([0, domain])
-    .range([ height, 0 ]);
-  svg.append("g")
-    .call(d3.axisLeft(y));
-
-	var color = d3.scaleOrdinal()
-	  .domain(subgroups)
-	  .range(['red','blue','green','orange','yellow','black'])
-
-
-  //stack the data? --> stack per subgroup
-  var stackedData = d3.stack()
-    .keys(subgroups)
-    (data)
-
-  // Show the bars
-  if (demographic=='age') {
-	  svg.append("g")
-	    .selectAll("g")
-	    // Enter in the stack data = loop key per key = group per group
-	    .data(stackedData)
-	    .enter().append("g")
-	      .attr("fill", function(d) { return color(d.key); })
-	      .selectAll("rect")
-	      // enter a second time = loop subgroup per subgroup to add all rectangles
-	      .data(function(d) { return d; })
-	      .enter().append("rect")
-	        .attr("x", function(d) { return x(d.data.AGEGROUP); })
-	        .attr("y", function(d) { return y(d[1]); })
-	        .attr("height", function(d) { return y(d[0]) - y(d[1]); })
-	        .attr("width",x.bandwidth())
-	}
-	else if (demographic=='sex') {
-  	  svg.append("g")
-  	    .selectAll("g")
-  	    // Enter in the stack data = loop key per key = group per group
-  	    .data(stackedData)
-  	    .enter().append("g")
-  	      .attr("fill", function(d) { return color(d.key); })
-  	      .selectAll("rect")
-  	      // enter a second time = loop subgroup per subgroup to add all rectangles
-  	      .data(function(d) { return d; })
-  	      .enter().append("rect")
-  	        .attr("x", function(d) { return x(d.data.SEX); })
-  	        .attr("y", function(d) { return y(d[1]); })
-  	        .attr("height", function(d) { return y(d[0]) - y(d[1]); })
-  	        .attr("width",x.bandwidth())
-  	}
-	else  if (demographic=='race') {
-  	  svg.append("g")
-  	    .selectAll("g")
-  	    // Enter in the stack data = loop key per key = group per group
-  	    .data(stackedData)
-  	    .enter().append("g")
-  	      .attr("fill", function(d) { return color(d.key); })
-  	      .selectAll("rect")
-  	      // enter a second time = loop subgroup per subgroup to add all rectangles
-  	      .data(function(d) { return d; })
-  	      .enter().append("rect")
-  	        .attr("x", function(d) { return x(d.data.RACE); })
-  	        .attr("y", function(d) { return y(d[1]); })
-  	        .attr("height", function(d) { return y(d[0]) - y(d[1]); })
-  	        .attr("width",x.bandwidth())
-  	}
-
-})
-}
-</script>
-</div>
-
-<div style="float:right">
-<div class="dropdown">
-  <button onclick="myFunction4()" class="dropbtn">Please select demographic &#9660;</button>
-  <div id="myDropdown4" class="dropdown-content">
-    <a onclick="colorGraph2('age')">Age Group</a>
-    <a onclick="colorGraph2('sex')">Sex</a>
-    <a onclick="colorGraph2('race')">Race</a>
-  </div>
-</div>
-<script>
-function myFunction4() {
-  document.getElementById("myDropdown4").classList.toggle("show");
-}
-</script>
-<p> <!--blank line to put button on top --> </p>
-
-<!-- Create a div where the graph will take place -->
-<svg id="my_dataviz4" width="450" height="400"></svg>
-<script>
-function colorGraph2(demographic) {
-
-// set the dimensions and margins of the graph
-var margin = {top: 10, right: 30, bottom: 20, left: 50},
-    width = 460 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
-
-// append the svg object to the body of the page
-$("#my_dataviz4").empty();
-var svg = d3.select("#my_dataviz4")
-  .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
-
-
-// Parse the Data
-var urls = ["https://raw.githubusercontent.com/matthewlombardo/HCIProject2/master/graph1AGE.csv","https://raw.githubusercontent.com/matthewlombardo/HCIProject2/master/graph1SEX.csv","https://raw.githubusercontent.com/matthewlombardo/HCIProject2/master/graph1RACE.csv"];
-var filename;
-if (demographic=='age') {
-	filename = urls[0];
-}
-else if (demographic=='sex'){
-	filename = urls[1];
-}
-else if (demographic=='race'){
-	filename = urls[2];
-}
-
-d3.csv(filename, function(data) {
-
-  // List of subgroups = header of the csv files = soil condition here
-  var subgroups = data.columns.slice(1)
-  console.log(subgroups)
-
-  // List of groups = species here = value of the first column called group -> I show them on the X axis
-  var groups;
-  var domain;
-  if (demographic=='age') {
-	  groups = d3.map(data, function(d){return(d.AGEGROUP)}).keys()
-	  domain = 1000000;
-  }
-  else if (demographic=='sex'){
-	  groups = d3.map(data, function(d){return(d.SEX)}).keys()
-	  domain = 2500000;
-  }
-  else if (demographic=='race'){
-	  groups = d3.map(data, function(d){return(d.RACE)}).keys()
-	  domain = 3500000;
-  }
-  //var groups = d3.map(data, function(d){return(d.AGEGROUP)}).keys()
-  //console.log(groups)
-
-  // Add X axis
-  var x = d3.scaleBand()
-      .domain(groups)
-      .range([0, width+20])
-      .padding([0.2])
-  svg.append("g")
-    .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x).tickSizeOuter(0));
-
-  //
-  // Add Y axis
-  var y = d3.scaleLinear()
-    .domain([0, domain])
-    .range([ height, 0 ]);
-  svg.append("g")
-    .call(d3.axisLeft(y));
-
-	var color = d3.scaleOrdinal()
-	  .domain(subgroups)
-	  .range(['red','blue','green','orange','yellow','black'])
-
-
-  //stack the data? --> stack per subgroup
-  var stackedData = d3.stack()
-    .keys(subgroups)
-    (data)
-
-  // Show the bars
-  if (demographic=='age') {
-	  svg.append("g")
-	    .selectAll("g")
-	    // Enter in the stack data = loop key per key = group per group
-	    .data(stackedData)
-	    .enter().append("g")
-	      .attr("fill", function(d) { return color(d.key); })
-	      .selectAll("rect")
-	      // enter a second time = loop subgroup per subgroup to add all rectangles
-	      .data(function(d) { return d; })
-	      .enter().append("rect")
-	        .attr("x", function(d) { return x(d.data.AGEGROUP); })
-	        .attr("y", function(d) { return y(d[1]); })
-	        .attr("height", function(d) { return y(d[0]) - y(d[1]); })
-	        .attr("width",x.bandwidth())
-	}
-	else if (demographic=='sex') {
-  	  svg.append("g")
-  	    .selectAll("g")
-  	    // Enter in the stack data = loop key per key = group per group
-  	    .data(stackedData)
-  	    .enter().append("g")
-  	      .attr("fill", function(d) { return color(d.key); })
-  	      .selectAll("rect")
-  	      // enter a second time = loop subgroup per subgroup to add all rectangles
-  	      .data(function(d) { return d; })
-  	      .enter().append("rect")
-  	        .attr("x", function(d) { return x(d.data.SEX); })
-  	        .attr("y", function(d) { return y(d[1]); })
-  	        .attr("height", function(d) { return y(d[0]) - y(d[1]); })
-  	        .attr("width",x.bandwidth())
-  	}
-	else  if (demographic=='race') {
-  	  svg.append("g")
-  	    .selectAll("g")
-  	    // Enter in the stack data = loop key per key = group per group
-  	    .data(stackedData)
-  	    .enter().append("g")
-  	      .attr("fill", function(d) { return color(d.key); })
-  	      .selectAll("rect")
-  	      // enter a second time = loop subgroup per subgroup to add all rectangles
-  	      .data(function(d) { return d; })
-  	      .enter().append("rect")
-  	        .attr("x", function(d) { return x(d.data.RACE); })
-  	        .attr("y", function(d) { return y(d[1]); })
-  	        .attr("height", function(d) { return y(d[0]) - y(d[1]); })
-  	        .attr("width",x.bandwidth())
-  	}
-
-})
-}
-</script>
-</div>
-
-
-<hr style="clear:both;">
 
 <!-- -->
 <!-- BUBBLES -->
