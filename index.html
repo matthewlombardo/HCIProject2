@@ -94,9 +94,14 @@ body {
 .show {display: block;}
 
 #wrapper {
-	width: 960px;
+	width: 1200px;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+#wrapper > p,ul,h1,h2,hr {
+  margin-left: 120px;
+  margin-right: 120px;
 }
 </style>
 <script>
@@ -159,12 +164,14 @@ body {
 </p>
 <p>
   Our data colors each county by one of several variables:
+</p>
   <ul>
     <li>the percentage of individuals registered to vote, relative to the county's population</li>
     <li>the turnout rate for the election, relative to the number of registered voters</li>
     <li>the percentage of voters of each race.</li>
   </ul>
-  Clicking on a variable redraws the map, with the different hues indicating varying degrees of the variable. For example, a white
+  <p>
+    Clicking on a variable redraws the map, with the different hues indicating varying degrees of the variable. For example, a white
   county would indicate zero percent, while a dark and vibrant color represents one hundred percent.
 </p>
 <p>
@@ -1385,10 +1392,6 @@ function bubbler1(scheme) {
 </script>
 </div>
 
-<div style="float:right">
-	<p> Some analysis....</p>
-</div>
-
 <hr style="clear:both;">
 
 <h2>Epilogue</h2>
@@ -1416,7 +1419,7 @@ function bubbler1(scheme) {
 
 <h2>References</h2>
 
-We borrowed d3.js code from the following sources:
+<p>We borrowed d3.js code from the following sources:</p>
 
 <ul>
   <li>Part I: <a href="https://www.d3-graph-gallery.com/graph/choropleth_basic.html">https://www.d3-graph-gallery.com/graph/choropleth_basic.html</a></li>
@@ -1424,7 +1427,7 @@ We borrowed d3.js code from the following sources:
   <li>Part III: <a href="https://www.d3-graph-gallery.com/graph/circularpacking_template.html">https://www.d3-graph-gallery.com/graph/circularpacking_template.html</a></li>
 </ul>
 
-Additionally, the following resources contributed insight:
+<p>Additionally, the following resources contributed insight:</p>
 
 <ul>
   <li><a href="https://www.dosomething.org/us/articles/7-signs-voter-suppression-could-be-happening-near-you">https://www.dosomething.org/us/articles/7-signs-voter-suppression-could-be-happening-near-you</a></li>
@@ -1432,14 +1435,14 @@ Additionally, the following resources contributed insight:
   <li><a href="https://inequality.org/great-divide/unleashing-the-power-of-poor-voters-in-a-black-milwaukee-neighborhood/">https://inequality.org/great-divide/unleashing-the-power-of-poor-voters-in-a-black-milwaukee-neighborhood/</a></li>
 </ul>
 
-Code used for this project is available in the following repositories:
+<p>Code used for this project is available in the following repositories:</p>
 
 <ul>
   <li><a href="https://github.com/skemper/hcip2">Data analysis code</a></li>
   <li><a href="https://github.com/matthewlombardo/HCIProject2">Code for this website</a></li>
 </ul>
 
-Finally, our underlying data comes from:
+<p>Finally, our underlying data comes from:</p>
 
 <ul>
   <li><a href="https://demography.osbm.nc.gov/explore/dataset/ncprojectionsbyagegrp2019/table/">North Carolina State Demographer: Population Projections by Race, Sex & Age Groups</a></li>
