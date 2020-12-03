@@ -1,24 +1,59 @@
 <!DOCTYPE html>
 <html>
-<style>
-body {
-	background-color: #FBFAED;
-}
-</style>
-<body>
-<center><h1>EN.601.490/690 HCI Project 2</h1></center>
-<center><h3>Team Members: Cindy Koo, Stephan Kemper, & Matthew Lombardo</h3></center>
-<p>Amidst the United States 2020 Presidential Election...</p>
-</body>
-
-
-<meta charset="utf-8">
-
 <head>
 <!-- Add jquery to clear object -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
+/* @import url('https://fonts.googleapis.com/css2?family=Arvo&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Bitter:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap');
+
+h1,h2 {
+	font-family: 'Bitter', serif;
+}
+
+h3 {
+	font-weight: normal;
+	color: #334;
+}
+
+td {
+  padding: 5px;
+}
+
+body {
+	background-color: #EEE /* #FBFAED */;
+	font-family: 'IBM Plex Sans', sans-serif;
+}
+
+.tooltip {
+  z-index: 1070;
+  display: block;
+  margin: 0;
+  /* font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"; */
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: left;
+  text-align: start;
+  text-decoration: none;
+  text-shadow: none;
+  text-transform: none;
+  letter-spacing: normal;
+  word-break: normal;
+  word-spacing: normal;
+  white-space: normal;
+  line-break: auto;
+  font-size: .875rem;
+  word-wrap: break-word;
+}
+
 .dropbtn {
   background-color: #2980B9;
   color: white;
@@ -57,26 +92,82 @@ body {
 .dropdown a:hover {background-color: #ddd;}
 
 .show {display: block;}
+
+#wrapper {
+	width: 960px;
+	margin-left: auto;
+	margin-right: auto;
+}
 </style>
+<script>
+  $(document).ready(function() {
+  makeMap1('red')
+  makeMap2('green')
+  colorGraph1('race')
+  colorGraph2('age')
+  bubbler1('distance')
+})
+</script>
+
 </head>
+
 <body>
+	<div id="wrapper">
+<h1 style="text-align: center;">Examining Voting Inequality Through the 2020 Elections</h1>
+<h3 style="text-align: center;">Team Members: Cindy Koo, Stephan Kemper, & Matthew Lombardo</h3>
+<p>
+  With the 2020 presidential elections fresh off in our minds, we thought this would be the perfect opportunity
+  to dissect this monumental election and examine social injustice and accessibility issues through this project. According
+  to the article “7 Signs Voter Suppression Could Be Happening Near You,” minority and low-income voters still face a 
+  multitude of barriers in the voting process. While regulations have strived to provide equality and democracy to 
+  everybody in casting a vote, new and subtle ways to prevent minority groups from practicing their rights. <!-- TODO finish sentence -->
+</p>
+<p>
+  An article on the website Inequality, titled “Unleashing the Power of Poor Voters in a Black Milwaukee Neighborhood” found that roughly 16% 
+  of Black voters in Milwaukee were “disenfranchised” from the Wisconsin primary due to the vast reduction of polling sites.
+  Additionally, the campaigners highlighted in the article found that 34 million low-income individuals did not vote, 
+  although they were eligible to. Another article on Inequality, titled “To Reduce Inequality in Elections, All States 
+  Should Allow Voting at Home” offered a reason to why that is: because low-income citizens may experience more difficulties
+  traveling to polling places. In this article, the authors vouch for voting at home for additional reasons, such as to 
+  allow disabled people, seniors and rural voters to participate in the election. This got us interested in not only 
+  conducting analyses on voter data, but also prompted us to think more about the accessibility issues in the election, 
+  and how human-centered design principles can be implemented in future elections to reduce these problems.
+</p>
+<p>
+  Inspired by the aforementioned articles, we set off on a quest to examine how voter inequality was prominent 
+  in this recent election. We began with searching for voter registration databases online, and to our dismay, many states 
+  requested payment in exchange for data. Fortunately for us, the state of North Carolina offered valuable data free of 
+  charge. With a quick filling out of some forms, we were able to obtain a Voter Registration Database and a Voting History 
+  Database. Thus, we decided to perform our data analysis on the wonderful state of North Carolina.
+</p>
+
 
 <!-- -->
 <!-- MAPS -->
 <!-- -->
 
 <h2>Part I: Racial/Ethnic Background & Turnout Rate</h2>
-<p>DESCRIPTION OF WHAT THIS IS</p>
+<p>
+  Next, we turned to examine the theme of racial background and turnout rate a little more closely. For this 
+  analysis, we used a choropleth map, which is a data analysis method that shows different areas in the map in varying
+   shades or colors that are proportional to a variable. We decided to include three variables that the user can choose
+    to view for this visualization. In order to allow for ease of comparison between the variables, we included two maps
+     side by side for easy access. The blank map is of the North Caroline state, divided into its counties as shown by 
+     the borders. By clicking on different options below the map, the user can choose to view the choropleth map 
+     according to the desired variable. The variables include: percentage of individuals registered to vote, turnout 
+     rate, and percentage of voters of X race. Clicking on a variable will show a choropleth map, with the different hues 
+     indicating varying degrees of the variable. <!-- [Insert analysis here after map is constructed] -->
+</p>
 
-<div style="float:left">
-<div class="dropdown">
-  <button onclick="myFunction1()" class="dropbtn">Please select map!</button>
-  <div id="myDropdown" class="dropdown-content">
-    <a href="#home" onclick=makeMap1('red')>Red Map</a>
-    <a href="#about" onclick=makeMap1('blue')>Blue Map</a>
-    <a href="#contact" onclick=makeMap1('green')>Green Map</a>
+<div style="float:left" id="leftMap">
+  <div class="dropdown">
+    <button onclick="myFunction1()" class="dropbtn">Please select map!</button>
+    <div id="myDropdown" class="dropdown-content">
+      <a href="#home" onclick=makeMap1('red')>Red Map</a>
+      <a href="#about" onclick=makeMap1('blue')>Blue Map</a>
+      <a href="#contact" onclick=makeMap1('green')>Green Map</a>
+    </div>
   </div>
-</div>
 <script>
 function myFunction1() {
   document.getElementById("myDropdown").classList.toggle("show");
@@ -97,14 +188,12 @@ window.onclick = function(event) {
 }
 </script>
 
-<!-- Load d3.js -->
-<script src="https://d3js.org/d3.v4.js"></script>
-<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+
+
 <p></p>
 <!-- Create an element where the map will take place -->
 
-<svg id="my_dataviz" width="600" height="350"></svg>
+<svg id="my_dataviz" width="450" height="350"></svg>
 <script>
 function makeMap1(color) {
   // The svg
@@ -139,7 +228,6 @@ function makeMap1(color) {
 	.await(ready);
 
 	for (const [key, value] of countyMap.entries()) {
-		console.log("fuck me")
 	  console.log("pair: ",  key, value);
 	}
 
@@ -167,43 +255,37 @@ function makeMap1(color) {
 </script>
 </div>
 
-<div style="float:right">
-<div class="dropdown">
-  <button onclick="myFunction2()" class="dropbtn">Please select map!</button>
-  <div id="myDropdown2" class="dropdown-content">
-    <a href="#home" onclick=makeMap2('red')>Red Map 2</a>
-    <a href="#about" onclick=makeMap2('blue')>Blue Map 2</a>
-    <a href="#contact" onclick=makeMap2('green')>Green Map 2</a>
+<div style="float:right" id="rightMap">
+  <div class="dropdown">
+    <button onclick="myFunction2()" class="dropbtn">Please select map!</button>
+    <div id="myDropdown2" class="dropdown-content">
+      <a href="#home" onclick=makeMap2('red')>Red Map 2</a>
+      <a href="#about" onclick=makeMap2('blue')>Blue Map 2</a>
+      <a href="#contact" onclick=makeMap2('green')>Green Map 2</a>
+    </div>
   </div>
-</div>
 <script>
 function myFunction2() {
   document.getElementById("myDropdown2").classList.toggle("show");
 }
 
-// Close the dropdown if the user clicks outside of it
-window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
-    }
-  }
-}
+// // Close the dropdown if the user clicks outside of it
+// window.onclick = function(event) {
+//   if (!event.target.matches('.dropbtn')) {
+//     var dropdowns = document.getElementsByClassName("dropdown-content");
+//     var i;
+//     for (i = 0; i < dropdowns.length; i++) {
+//       var openDropdown = dropdowns[i];
+//       if (openDropdown.classList.contains('show')) {
+//         openDropdown.classList.remove('show');
+//       }
+//     }
+//   }
+// }
 </script>
-
-<!-- Load d3.js -->
-<script src="https://d3js.org/d3.v4.js"></script>
-<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
 <p></p>
-<!-- Create an element where the map will take place -->
 
-<svg id="my_dataviz2" width="400" height="400"></svg>
+<svg id="my_dataviz2" width="450" height="350"></svg>
 <script>
 function makeMap2(color) {
 
@@ -283,33 +365,98 @@ function makeMap2(color) {
 <!-- -->
 
 <h2>Part II: Voting History & Demographic Information</h2>
-<p>HI CINDY! When I said this would be done by 10:15, I meant 11:45... :)</p>
-
-<p> First off please ignore all the "//" in the middle of sentences; I needed them //
-	so I could keep seeing what I was writing </p>
-
-<p>These bar graphs are the voter data for North Carolina for the 2020 General //
-	 Election (Nov 3). For age groups, the # on the x axis denotes the bottom //
-	 of an age group; i.e. "10" represents "10-19". For race, the abbreviations //
-	 are as follows: W=White, B=Black or African American, A=Asian, IA/AN = //
-	 Indian American or Alaska Native, U=Undesignated, 2+=Two or More Races, //
-	 O=Other, & NH/PI=Native Hawaiian or Pacific Islander. I had to abbreviate //
-	 cuz the names were too long and were overlapping on the graph. If you could //
-	 include some sort of key or footnote that'd be grrrrrrrrreat! </p>
-
-<p> The stacked colors are political parties. Red is Republican, Blue is Democrat, //
-	and that orange color is Unaffiliated (a surprisingly large number!). There is //
-	also Libertarian (green), Constitution Party (yellow), and Green Party (black). //
-	If you look closely you can see little slivers of these (The order on the graph //
-	is R->D->L->U->C->G). Some kind of key/explanation of this would be great as well.
+<p>
+  We began our analysis with the topic of voter demographic information and voter's registered party for the 2020 
+  General Election in North Carolina. With findings from articles that state the discrepancies in voter turnout rates between different 
+  demographic groups, we were interested to see if this applied to North Carolina too.
+</p>
+<p>
+  We chose three demographic 
+  variables: age, gender, and race and compared the number of voters in each of the sub-categories of a variable. For 
+  reference (and to make the data even more interesting), we included data regarding registered political party: 
+  
+  
+  . In order for ease of comparison between the categories, we used a stacked bar graph that allows for quick 
+  visualization of the data. What we found in relation to age groups was a significant clustering of high voting 
+  turnout between the ages of 20 to 60. In contrast, we see the numbers drop for individuals in their 70s and 80s. We 
+  also observe low numbers of voters for individuals in their early adulthood. These low numbers could be due to a 
+  number of factors, such as inaccessibility to transportation to polling booths, education levels, and difficulty in 
+  voter registration. In terms of voter sex and turnout rate, we didn’t find much that was surprising, as there seemed 
+  to be a smaller margin of difference for the total votes between the male and female voters. What intrigued us most 
+  was the data on race and voter turnout rates. The race of the voters is indicated on the X-axis of the plot; the key is 
+  below. As seen 
+  in the chart below, there is a huge difference between the amount of White and Black voters. Even taking the general 
+  race demographics of North Carolina (reported to be 63% White and 21% Black) into account of, we can observe a 
+  drastically low turnout rate for Black voters. This again, may be the result of inequality or accessibility issues 
+  such as voter suppression against colored individuals or the lack of polling places in communities consisting mostly 
+  of minority people. 
 </p>
 
-<p> We gotta fix the cut off y-axis labels and center the 2 graphs better, but //
-	for now you should have what you need for anaylsis. We can also change the //
-	colors cuz these are ugly. Lemme know if you have any //
-	issues. You da best ! </p>
+<div id="barGraphKey" style="clear: both; width: 500px; margin-left: auto; margin-right: auto;">
+  <h3>Table Legends</h3>
+  <table style="float: left; top: 30px; left: 0px; border: none; font-size: .8em; width: 200px;">
+    <tr>
+      <td>W</td>
+      <td>White</td>
+    </tr>
+    <tr>
+      <td>B</td>
+      <td>Black or African American</td>
+    </tr>
+    <tr>
+      <td>A</td>
+      <td>Asian</td>
+    </tr>
+    <tr>
+      <td>IA/AN</td>
+      <td>Indian American or Alaska Native</td>
+    </tr>
+    <tr>
+      <td>U</td>
+      <td>Undesignated</td>
+    </tr>
+    <tr>
+      <td>2+</td>
+      <td>Two or More Races</td>
+    </tr>
+    <tr>
+      <td>O</td>
+      <td>Other</td>
+    </tr>
+    <tr>
+      <td>NH/PI</td>
+      <td>Native Hawaiian or Pacific Islander</td>
+    </tr>
+  </table>
+  <table style="float: right; border: none; font-size: .8em; width: 200px; margin-left: 40px;">
+    <tr>
+      <td>Red</td>
+      <td>Republican</td>
+    </tr>
+    <tr>
+      <td>Blue</td>
+      <td>Democratic</td>
+    </tr>
+    <tr>
+      <td>Green</td>
+      <td>Libertarian</td>
+    </tr>
+    <tr>
+      <td>Orange</td>
+      <td>Unaffiliated</td>
+    </tr>
+    <tr>
+      <td>Yellow</td>
+      <td>Constitution</td>
+    </tr>
+    <tr>
+      <td>Black</td>
+      <td>Green</td>
+    </tr>
+  </table>
+</div>
 
-<div style="float:left">
+<div style="float:left; clear: both">
 <div class="dropdown">
   <button onclick="myFunction3()" class="dropbtn">Please select demographic:</button>
   <div id="myDropdown3" class="dropdown-content">
@@ -325,11 +472,9 @@ function myFunction3() {
 </script>
 <p> <!--blank line to put button on top --> </p>
 
-<!-- Load d3.js -->
-<script src="https://d3js.org/d3.v4.js"></script>
 
 <!-- Create a div where the graph will take place -->
-<svg id="my_dataviz3" width="600" height="400"></svg>
+<svg id="my_dataviz3" width="450" height="400"></svg>
 <script>
 function colorGraph1(demographic) {
 
@@ -472,9 +617,9 @@ d3.csv(filename, function(data) {
 <div class="dropdown">
   <button onclick="myFunction4()" class="dropbtn">Please select demographic:</button>
   <div id="myDropdown4" class="dropdown-content">
-    <a href="#home" onclick=colorGraph2('age')>Age Group</a>
-    <a href="#about" onclick=colorGraph2('sex')>Sex</a>
-    <a href="#contact" onclick=colorGraph2('race')>Race</a>
+    <a href="#" onclick=colorGraph2('age')>Age Group</a>
+    <a href="#" onclick=colorGraph2('sex')>Sex</a>
+    <a href="#" onclick=colorGraph2('race')>Race</a>
   </div>
 </div>
 <script>
@@ -484,11 +629,8 @@ function myFunction4() {
 </script>
 <p> <!--blank line to put button on top --> </p>
 
-<!-- Load d3.js -->
-<script src="https://d3js.org/d3.v4.js"></script>
-
 <!-- Create a div where the graph will take place -->
-<svg id="my_dataviz4" width="600" height="400"></svg>
+<svg id="my_dataviz4" width="450" height="400"></svg>
 <script>
 function colorGraph2(demographic) {
 
@@ -636,10 +778,19 @@ d3.csv(filename, function(data) {
 
 
 <h2>Part III: Distance to Polling Places</h2>
-<p>DESCRIPTION OF WHAT THIS IS</p>
+<p>
+  Lastly, we conducted a spatial analysis on distance to polling places. Through the voter registration database, 
+  we obtained the addresses of voters in North Carolina, and through the polling locations database, we retrieved the 
+  locations of all polling booths across the counties. This analysis was conducted in order to expand on some themes 
+  we introduced earlier: accessibility to polling booths and its effect on ease of voting. For this visualization, we 
+  utilized a bubble chart, in which the area of each bubble is proportional a value (in this case is the average distance 
+  to polling places and voter turnout rate) in each county. When clicking on the different variables displayed underneath 
+  the chart, the bubbles’ sizes will shift accordingly to allow an animated visualization of how the distance to polling 
+  places correlate with voter turnout rates in each county. <!-- Insert analysis here after map is constructed -->
+</p>
 
 <!-- Bubble Chart -->
-<div style="float:center">
+<div id="bubbleCharts">
 <div class="dropdown">
   <button onclick="myFunction5()" class="dropbtn">Please select statistic:</button>
   <div id="myDropdown5" class="dropdown-content">
@@ -647,13 +798,7 @@ d3.csv(filename, function(data) {
     <a href="#about" onclick=bubbler1('voter')>Voter Turnout</a>
   </div>
 </div>
-<meta charset="utf-8">
 
-<!-- Load d3.js -->
-<script src="https://d3js.org/d3.v4.js"></script>
-
-<!-- Color palette -->
-<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
 <!-- Instantiate svg object -->
 <style>
@@ -670,7 +815,7 @@ function myFunction5() {
 </script>
 
 <p><!-- blank line to put button on top --> </p>
-<svg id="my_dataviz5" width="600" height="600"></svg>
+<div id="my_dataviz5" width="400" height="400"></div>
 
 <script>
 function bubbler1(scheme) {
@@ -703,11 +848,12 @@ function bubbler1(scheme) {
 	    .style("border-width", "2px")
 	    .style("border-radius", "5px")
 	    .style("padding", "5px")
+      .style("height", "100px")
+      .style("width", "100px")
 
 	  // Three function that change the tooltip when user hover / move / leave a cell
 	  var mouseover = function(d) {
-    	Tooltip
-      	.style("opacity", 1)
+    	Tooltip.style("opacity", 1)
   	  }
 	  /* @STEPHAN:
 	  This mousemove function should be displaying that print output.
@@ -783,22 +929,60 @@ function bubbler1(scheme) {
 
 <hr style="clear:both;">
 
+<h2>Epilogue</h2>
+<p>
+  Through this project, we had the fascinating experience of examining social injustice and accessibility issues in the scope of the 
+  presidential elections. The current analysis prompts us to ask questions for further study: How are individuals in various groups 
+  that we haven’t explore (demographic, socioeconomic, educational) affected by voter suppression? How would analysis of data from 
+  other states look different from that of North Carolina? Are there noticeable differences between Democratic states and Republican 
+  states in voter suppression/inequality? And importantly, looking forward, what solutions can be posed to combat and ameliorate 
+  these social justice issues so that future elections aren’t tainted by the same problems that are prevalent now? In conclusion, this 
+  project gave us an excellent opportunity to become more educated about social injustice issues revolving the election, how 
+  marginalized populations are affected, and what consequences these issues can pose. With this insight, we hope to be more cognizant 
+  and considerate in our designing practices going forward. 
+</p>
 
-<h3>References</h3>
+<hr style="clear: both;">
+
+
+<h2>References</h2>
 
 We borrowed d3.js code from the following sources:
 
-<p></p>
+<ul>
+  <li>Part I: <a href="https://www.d3-graph-gallery.com/graph/choropleth_basic.html">https://www.d3-graph-gallery.com/graph/choropleth_basic.html</a></li>
+  <li>Part II: <a href="https://www.d3-graph-gallery.com/graph/barplot_stacked_basicWide.html">https://www.d3-graph-gallery.com/graph/barplot_stacked_basicWide.html</a></li>
+  <li>Part III: <a href="https://www.d3-graph-gallery.com/graph/circularpacking_template.html">https://www.d3-graph-gallery.com/graph/circularpacking_template.html</a></li>
+</ul>
 
-Part I: <a href="https://www.d3-graph-gallery.com/graph/choropleth_basic.html">https://www.d3-graph-gallery.com/graph/choropleth_basic.html</a>
+Additionally, the following resources contributed insight:
 
-<p></p>
+<ul>
+  <li><a href="https://www.dosomething.org/us/articles/7-signs-voter-suppression-could-be-happening-near-you">https://www.dosomething.org/us/articles/7-signs-voter-suppression-could-be-happening-near-you</a></li>
+  <li><a href="https://inequality.org/great-divide/vote-at-home/">https://inequality.org/great-divide/vote-at-home/</a></li>
+  <li><a href="https://inequality.org/great-divide/unleashing-the-power-of-poor-voters-in-a-black-milwaukee-neighborhood/">https://inequality.org/great-divide/unleashing-the-power-of-poor-voters-in-a-black-milwaukee-neighborhood/</a></li>
+</ul>
 
-Part II: <a href="https://www.d3-graph-gallery.com/graph/barplot_stacked_basicWide.html">https://www.d3-graph-gallery.com/graph/barplot_stacked_basicWide.html</a>
+Code used for this project is available in the following repositories:
 
-<p></p>
+<ul>
+  <li><a href="https://github.com/skemper/hcip2">Data analysis code</a></li>
+  <li><a href="https://github.com/matthewlombardo/HCIProject2">Code for this website</a></li>
+</ul>
 
-Part III: <a href="https://www.d3-graph-gallery.com/graph/circularpacking_template.html">https://www.d3-graph-gallery.com/graph/circularpacking_template.html</a>
+Finally, our underlying data comes from:
+
+<ul>
+  <li><a href="https://demography.osbm.nc.gov/explore/dataset/ncprojectionsbyagegrp2019/table/">North Carolina State Demographer: Population Projections by Race, Sex & Age Groups</a></li>
+  <li><a href="https://download.geofabrik.de/north-america/us.html">GeoFabrik US data file</a></li>
+  <li><a href="https://nominatim.org/">Nominatim Geocoding</a></li>
+  <li><a href="https://vt.ncsbe.gov/pplkup/">North Carolina Polline Place Lookup</a></li>
+  <li><a href="https://www.ncsbe.gov/results-data/voter-history-data">North Carolina Voter History Data</a></li>
+  <li><a href="https://www.ncsbe.gov/results-data/voter-registration-data">North Carolina Voter Registration Data</a></li>
+</ul>
+
+</div>
+</body>
 
 
 </html>
