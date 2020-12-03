@@ -152,11 +152,22 @@ body {
   analysis, we used a choropleth map, which is a data analysis method that shows different areas in the map in varying
    shades or colors that are proportional to a variable. We decided to include three variables that the user can choose
     to view for this visualization. In order to allow for ease of comparison between the variables, we included two maps
-     side by side for easy access. The blank map is of the North Caroline state, divided into its counties as shown by 
-     the borders. By clicking on different options below the map, the user can choose to view the choropleth map 
-     according to the desired variable. The variables include: percentage of individuals registered to vote, turnout 
-     rate, and percentage of voters of X race. Clicking on a variable will show a choropleth map, with the different hues 
-     indicating varying degrees of the variable. <!-- [Insert analysis here after map is constructed] -->
+     side by side for easy access. The blank map divides North Carolina into its counties, as shown by 
+     the borders. By clicking on different options above the map, the user can choose to view the map 
+     according to the desired variable.
+</p>
+<p>
+  Our data colors each county by one of several variables:
+  <ul>
+    <li>the percentage of individuals registered to vote, relative to the county's population</li>
+    <li>the turnout rate for the election, relative to the number of registered voters</li>
+    <li>the percentage of voters of each race.</li>
+  </ul>
+  Clicking on a variable redraws the map, with the different hues indicating varying degrees of the variable. For example, a white
+  county would indicate zero percent, while a dark and vibrant color represents one hundred percent.
+</p>
+<p>
+
 </p>
 
 <div style="float:left" id="leftMap">
@@ -269,19 +280,6 @@ function myFunction2() {
   document.getElementById("myDropdown2").classList.toggle("show");
 }
 
-// // Close the dropdown if the user clicks outside of it
-// window.onclick = function(event) {
-//   if (!event.target.matches('.dropbtn')) {
-//     var dropdowns = document.getElementsByClassName("dropdown-content");
-//     var i;
-//     for (i = 0; i < dropdowns.length; i++) {
-//       var openDropdown = dropdowns[i];
-//       if (openDropdown.classList.contains('show')) {
-//         openDropdown.classList.remove('show');
-//       }
-//     }
-//   }
-// }
 </script>
 <p></p>
 
@@ -371,25 +369,25 @@ function makeMap2(color) {
   demographic groups, we were interested to see if this applied to North Carolina too.
 </p>
 <p>
-  We chose three demographic 
-  variables: age, gender, and race and compared the number of voters in each of the sub-categories of a variable. For 
-  reference (and to make the data even more interesting), we included data regarding registered political party: 
-  
-  
-  . In order for ease of comparison between the categories, we used a stacked bar graph that allows for quick 
-  visualization of the data. What we found in relation to age groups was a significant clustering of high voting 
-  turnout between the ages of 20 to 60. In contrast, we see the numbers drop for individuals in their 70s and 80s. We 
-  also observe low numbers of voters for individuals in their early adulthood. These low numbers could be due to a 
-  number of factors, such as inaccessibility to transportation to polling booths, education levels, and difficulty in 
-  voter registration. In terms of voter sex and turnout rate, we didn’t find much that was surprising, as there seemed 
+  We chose three demographic variables (age, gender, and race) and compared the number of voters in each of the 
+  sub-categories of a variable. For reference, and to make the data even more interesting, we included data 
+  regarding registered political party.  In order for ease of comparison between the categories, we used a stacked 
+  bar graph that allows for quick comprehension of the data. 
+</p>
+<p>
+  What we found in relation to age groups was a significant clustering of high votes between the ages of 20 to 60.
+  In contrast, we see the numbers drop for individuals in their 70s and 80s.  While we might explain that away with the 
+  fact that here are many fewer of these voters, we also observe low numbers of votes for individuals in their early adulthood.
+  These low numbers could be due to a number of factors, such as inaccessibility to transportation to polling booths, 
+  education levels, and difficulty in voter registration.
+</p>
+<p>
+  In terms of voter sex and turnout rate, we didn’t find much that was surprising, as there seemed 
   to be a smaller margin of difference for the total votes between the male and female voters. What intrigued us most 
   was the data on race and voter turnout rates. The race of the voters is indicated on the X-axis of the plot; the key is 
-  below. As seen 
-  in the chart below, there is a huge difference between the amount of White and Black voters. Even taking the general 
-  race demographics of North Carolina (reported to be 63% White and 21% Black) into account of, we can observe a 
-  drastically low turnout rate for Black voters. This again, may be the result of inequality or accessibility issues 
-  such as voter suppression against colored individuals or the lack of polling places in communities consisting mostly 
-  of minority people. 
+  below. There is a huge difference between the amount of White and Black voters. Even taking into account the general 
+  race demographics of North Carolina (reported to be 63% White and 21% Black), we can observe a 
+  drastically low turnout rate for Black voters.
 </p>
 
 <div id="barGraphKey" style="clear: both; width: 500px; margin-left: auto; margin-right: auto;">
@@ -779,14 +777,26 @@ d3.csv(filename, function(data) {
 
 <h2>Part III: Distance to Polling Places</h2>
 <p>
-  Lastly, we conducted a spatial analysis on distance to polling places. Through the voter registration database, 
-  we obtained the addresses of voters in North Carolina, and through the polling locations database, we retrieved the 
-  locations of all polling booths across the counties. This analysis was conducted in order to expand on some themes 
-  we introduced earlier: accessibility to polling booths and its effect on ease of voting. For this visualization, we 
-  utilized a bubble chart, in which the area of each bubble is proportional a value (in this case is the average distance 
-  to polling places and voter turnout rate) in each county. When clicking on the different variables displayed underneath 
-  the chart, the bubbles’ sizes will shift accordingly to allow an animated visualization of how the distance to polling 
-  places correlate with voter turnout rates in each county. <!-- Insert analysis here after map is constructed -->
+  Finally, we conducted a spatial analysis on distance to polling places. Through the voter registration database, 
+  we obtained the addresses of each voter in North Carolina, and through the polling locations database, we retrieved the 
+  locations of all polling booths across the counties.  We could then geocode those locations into latitude and longitude,
+  and calculate the distance between a voter's home and their polling center.
+</p>
+<p>
+  As we found during our analysis, there are significant problems with the quality of this data.  Using open source 
+  methods and data sets, we could only successfully geocode roughly two-thirds of total voters in the state.  Many
+  voters had addresses that were incomplete or did not match with geospatial data sets from other agencies, such
+  as the US Census Bureau.  Even some polling places had addresses that were incorrect or incomplete.  The first
+  class of data problems might lead voters to be denied their vote, because their registration is incomplete or invalid.
+  The third may end up sending voters to the wrong location, or stop them from going out to vote altogether.
+</p>
+<p>
+  This analysis was conducted in order to expand on some themes we introduced earlier: accessibility to polling booths
+  and its effect on ease of voting. For this visualization, we utilized a bubble chart, in which the area of each bubble
+  is proportional to a value; in this case, the average distance to polling places or voter turnout rate in each county.
+</p>
+<p>
+  <!-- Insert analysis here after bubbles are done -->
 </p>
 
 <!-- Bubble Chart -->
@@ -931,15 +941,22 @@ function bubbler1(scheme) {
 
 <h2>Epilogue</h2>
 <p>
-  Through this project, we had the fascinating experience of examining social injustice and accessibility issues in the scope of the 
-  presidential elections. The current analysis prompts us to ask questions for further study: How are individuals in various groups 
-  that we haven’t explore (demographic, socioeconomic, educational) affected by voter suppression? How would analysis of data from 
-  other states look different from that of North Carolina? Are there noticeable differences between Democratic states and Republican 
-  states in voter suppression/inequality? And importantly, looking forward, what solutions can be posed to combat and ameliorate 
-  these social justice issues so that future elections aren’t tainted by the same problems that are prevalent now? In conclusion, this 
-  project gave us an excellent opportunity to become more educated about social injustice issues revolving the election, how 
-  marginalized populations are affected, and what consequences these issues can pose. With this insight, we hope to be more cognizant 
-  and considerate in our designing practices going forward. 
+  Through this project, we had the fascinating experience of examining social injustice and accessibility issues in the scope of elections.
+  The current analysis just scratches the surface, and prompts us to ask questions for further study.
+</p>
+<p><span style="font-weight: bold">How are individuals in various groups that we haven’t explore (socioeconomic, educational) affected by 
+  voting accessibility?</span> <!-- MORE -->
+</p>
+<p><span style="font-weight: bold">How would other states look different from North Carolina?</span><!-- MORE -->
+</p>
+<p><span style="font-weight: bold">Are there correllations between political bents and voter inequality?</span>
+</p>
+<p>
+  Answering any one of these questions is complex.  Even harder is proposing solutions to combat and ameliorate these issues so that 
+  future elections aren’t tainted by the same problems that are prevalent now.  This project gave us an excellent opportunity to 
+  become more educated about social injustice issues revolving the election, how marginalized populations are affected, and what 
+  consequences these issues can pose. With this insight, we hope to be more cognizant and considerate in our designing practices 
+  going forward. 
 </p>
 
 <hr style="clear: both;">
