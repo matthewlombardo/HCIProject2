@@ -1,29 +1,24 @@
 <!DOCTYPE html>
 <html>
+<style>
+body {
+	background-color: #FBFAED;
+}
+</style>
+<body>
+<center><h1>EN.601.490/690 HCI Project 2</h1></center>
+<center><h3>Team Members: Cindy Koo, Stephan Kemper, & Matthew Lombardo</h3></center>
+<p>Amidst the United States 2020 Presidential Election...</p>
+</body>
+
+
+<meta charset="utf-8">
+
 <head>
 <!-- Add jquery to clear object -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-/* @import url('https://fonts.googleapis.com/css2?family=Arvo&display=swap'); */
-@import url('https://fonts.googleapis.com/css2?family=Bitter:wght@700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap');
-
-h1,h2 {
-	font-family: 'Bitter', serif;
-}
-
-h3 {
-	font-weight: normal;
-	color: #334;
-}
-
-body {
-	background-color: #FBFAED;
-	font-family: 'IBM Plex Sans', sans-serif;
-}
-
 .dropbtn {
   background-color: #2980B9;
   color: white;
@@ -62,21 +57,9 @@ body {
 .dropdown a:hover {background-color: #ddd;}
 
 .show {display: block;}
-
-#wrapper {
-	width: 1200px;
-	margin-left: auto;
-	margin-right: auto;
-}
 </style>
 </head>
-
 <body>
-	<div id="wrapper">
-<h1 style="text-align: center;">Voting Access</h1>
-<h3 style="text-align: center;">Team Members: Cindy Koo, Stephan Kemper, & Matthew Lombardo</h3>
-<p>Amidst the United States 2020 Presidential Election...</p>
-
 
 <!-- -->
 <!-- MAPS -->
@@ -121,7 +104,7 @@ window.onclick = function(event) {
 <p></p>
 <!-- Create an element where the map will take place -->
 
-<svg id="my_dataviz" width="400" height="400"></svg>
+<svg id="my_dataviz" width="600" height="350"></svg>
 <script>
 function makeMap1(color) {
   // The svg
@@ -132,9 +115,10 @@ function makeMap1(color) {
 
   // Map and projection
   var path = d3.geoPath();
+
   var projection = d3.geoMercator()
-    .scale(70)
-    .center([0,20])
+  	.scale(3700)
+  	.center([-80,35])
     .translate([width / 2, height / 2]);
 
   // Data and color scale
@@ -143,28 +127,21 @@ function makeMap1(color) {
   var colorScale = d3.scaleThreshold()
     .domain([100000, 1000000, 10000000, 30000000, 100000000, 500000000])
     .range(d3.schemeReds[7]);
-    }
-    else if (color=='blue') {
-    var colorScale = d3.scaleThreshold()
-    .domain([100000, 1000000, 10000000, 30000000, 100000000, 500000000])
-    .range(d3.schemeBlues[7]);
-    }
-    else if (color=='green') {
-    var colorScale = d3.scaleThreshold()
-    .domain([100000, 1000000, 10000000, 30000000, 100000000, 500000000])
-    .range(d3.schemeGreens[7]);
-    }
+  }
 
 
   // Load external data and boot
-
+  var countyMap = new Map();
+  var help;
   d3.queue()
-    .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
-    .defer(d3.csv, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world_population.csv", function(d) { data.set(d.code, +d.pop); })
-    .await(ready);
-	//.defer(d3.json, "https://raw.githubusercontent.com/OpenDataDE/State-zip-code-GeoJSON/master/nc_north_carolina_zip_codes_geo.min.json")
+    .defer(d3.json, "https://raw.githubusercontent.com/matthewlombardo/HCIProject2/master/nc.geojson")
+    .defer(d3.csv, "https://raw.githubusercontent.com/matthewlombardo/HCIProject2/master/graph3TURNOUT.csv", (d) => {countyMap[d.COUNTY] = d.TURNOUT;})
+	.await(ready);
 
-
+	for (const [key, value] of countyMap.entries()) {
+		console.log("fuck me")
+	  console.log("pair: ",  key, value);
+	}
 
   function ready(error, topo) {
 
@@ -178,10 +155,11 @@ function makeMap1(color) {
         .attr("d", d3.geoPath()
           .projection(projection)
         )
-        // set the color of each country
+        // set the color of each county
         .attr("fill", function (d) {
-          d.total = data.get(d.id) || 0;
-          return colorScale(d.total);
+			console.log("let's see...", d.properties.NAME, countyMap[d.properties.NAME])
+			console.log("testing!", countyMap["Wayne"])
+          return colorScale(countyMap[d.properties.NAME]);
         })
       }
 
@@ -282,7 +260,11 @@ function makeMap2(color) {
         )
         // set the color of each country
         .attr("fill", function (d) {
+			console.log("properties?", d.properties)
           d.total = data.get(d.id) || 0;
+		  console.log("data.get(d.id)",data.get(d.id))
+		  console.log("d.total",d.total)
+
           return colorScale(d.total);
         })
       }
@@ -727,13 +709,20 @@ function bubbler1(scheme) {
     	Tooltip
       	.style("opacity", 1)
   	  }
-  	  var mousemove = function(d) {
-    	Tooltip
-		console.log(d.COUNTY + "<br>" + d.TURNOUT + " turnout")
-      .html(d.COUNTY + "<br>" + d.TURNOUT + " turnout")
-      .style("left", (d3.mouse(this)[0]+20) + "px")
-      .style("top", (d3.mouse(this)[1]) + "px")
-  		}
+	  /* @STEPHAN:
+	  This mousemove function should be displaying that print output.
+	  It prints to the console, like if you look at the div in the source in
+	 a browser it will show u, but it won't print on the screen.
+
+	 This code came from https://www.d3-graph-gallery.com/graph/circularpacking_template.html,
+	 where it works.
+	 */
+	  var mousemove = function(d) {
+	   	Tooltip
+	      .html('<u>' + d.COUNTY + '</u>' + "<br>" + d.TURNOUT + " inhabitants")
+	      .style("left", (d3.mouse(this)[0]+20) + "px")
+	      .style("top", (d3.mouse(this)[1]) + "px")
+	  }
 	  var mouseleave = function(d) {
 	    Tooltip
 	      .style("opacity", 0)
@@ -810,8 +799,6 @@ Part II: <a href="https://www.d3-graph-gallery.com/graph/barplot_stacked_basicWi
 <p></p>
 
 Part III: <a href="https://www.d3-graph-gallery.com/graph/circularpacking_template.html">https://www.d3-graph-gallery.com/graph/circularpacking_template.html</a>
-</div>
-</body>
 
 
 </html>
