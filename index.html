@@ -102,7 +102,7 @@ body {
 <script>
   $(document).ready(function() {
   makeMap1('red')
-  makeMap2('green')
+  makeMap2('red')
   colorGraph1('race')
   colorGraph2('age')
   bubbler1('distance')
@@ -118,27 +118,27 @@ body {
 <p>
   With the 2020 presidential elections fresh off in our minds, we thought this would be the perfect opportunity
   to dissect this monumental election and examine social injustice and accessibility issues through this project. According
-  to the article “7 Signs Voter Suppression Could Be Happening Near You,” minority and low-income voters still face a 
-  multitude of barriers in the voting process. While regulations have strived to provide equality and democracy to 
+  to the article “7 Signs Voter Suppression Could Be Happening Near You,” minority and low-income voters still face a
+  multitude of barriers in the voting process. While regulations have strived to provide equality and democracy to
   everybody in casting a vote, new and subtle ways to prevent minority groups from practicing their rights. <!-- TODO finish sentence -->
 </p>
 <p>
-  An article on the website Inequality, titled “Unleashing the Power of Poor Voters in a Black Milwaukee Neighborhood” found that roughly 16% 
+  An article on the website Inequality, titled “Unleashing the Power of Poor Voters in a Black Milwaukee Neighborhood” found that roughly 16%
   of Black voters in Milwaukee were “disenfranchised” from the Wisconsin primary due to the vast reduction of polling sites.
-  Additionally, the campaigners highlighted in the article found that 34 million low-income individuals did not vote, 
-  although they were eligible to. Another article on Inequality, titled “To Reduce Inequality in Elections, All States 
+  Additionally, the campaigners highlighted in the article found that 34 million low-income individuals did not vote,
+  although they were eligible to. Another article on Inequality, titled “To Reduce Inequality in Elections, All States
   Should Allow Voting at Home” offered a reason to why that is: because low-income citizens may experience more difficulties
-  traveling to polling places. In this article, the authors vouch for voting at home for additional reasons, such as to 
-  allow disabled people, seniors and rural voters to participate in the election. This got us interested in not only 
-  conducting analyses on voter data, but also prompted us to think more about the accessibility issues in the election, 
+  traveling to polling places. In this article, the authors vouch for voting at home for additional reasons, such as to
+  allow disabled people, seniors and rural voters to participate in the election. This got us interested in not only
+  conducting analyses on voter data, but also prompted us to think more about the accessibility issues in the election,
   and how human-centered design principles can be implemented in future elections to reduce these problems.
 </p>
 <p>
-  Inspired by the aforementioned articles, we set off on a quest to examine how voter inequality was prominent 
-  in this recent election. We began with searching for voter registration databases online, and to our dismay, 
-  <a href="https://docs.google.com/spreadsheets/d/1ZNX1X3abTrLccp3zBTUjksWl_PNvG0BYRQZ7MNdX17w/edit?usp=sharing">many states 
-  requested payment in exchange for data</a>. Fortunately for us, the state of North Carolina offered valuable data free of 
-  charge. With a quick filling out of some forms, we were able to obtain a Voter Registration Database and a Voting History 
+  Inspired by the aforementioned articles, we set off on a quest to examine how voter inequality was prominent
+  in this recent election. We began with searching for voter registration databases online, and to our dismay,
+  <a href="https://docs.google.com/spreadsheets/d/1ZNX1X3abTrLccp3zBTUjksWl_PNvG0BYRQZ7MNdX17w/edit?usp=sharing">many states
+  requested payment in exchange for data</a>. Fortunately for us, the state of North Carolina offered valuable data free of
+  charge. With a quick filling out of some forms, we were able to obtain a Voter Registration Database and a Voting History
   Database. Thus, we decided to perform our data analysis on the wonderful state of North Carolina.
 </p>
 
@@ -149,12 +149,12 @@ body {
 
 <h2>Part I: Racial/Ethnic Background & Turnout Rate</h2>
 <p>
-  Next, we turned to examine the theme of racial background and turnout rate a little more closely. For this 
+  Next, we turned to examine the theme of racial background and turnout rate a little more closely. For this
   analysis, we used a choropleth map, which is a data analysis method that shows different areas in the map in varying
    shades or colors that are proportional to a variable. We decided to include three variables that the user can choose
     to view for this visualization. In order to allow for ease of comparison between the variables, we included two maps
-     side by side for easy access. The blank map divides North Carolina into its counties, as shown by 
-     the borders. By clicking on different options above the map, the user can choose to view the map 
+     side by side for easy access. The blank map divides North Carolina into its counties, as shown by
+     the borders. By clicking on different options above the map, the user can choose to view the map
      according to the desired variable.
 </p>
 <p>
@@ -177,7 +177,6 @@ body {
     <div id="myDropdown" class="dropdown-content">
       <a onclick="makeMap1('red')">Red Map</a>
       <a onclick="makeMap1('blue')">Blue Map</a>
-      <a onclick="makeMap1('green')">Green Map</a>
     </div>
   </div>
 <script>
@@ -200,12 +199,16 @@ window.onclick = function(event) {
 }
 </script>
 
-
-
+<p></p>
+<!-- Create an element where the map will take place -->
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
 <p></p>
 <!-- Create an element where the map will take place -->
 
-<svg id="my_dataviz" width="450" height="350"></svg>
+<svg id="my_dataviz" width="600" height="350"></svg>
 <script>
 function makeMap1(color) {
   // The svg
@@ -224,24 +227,240 @@ function makeMap1(color) {
 
   // Data and color scale
   var data = d3.map();
-  if (color=='red') {
-  var colorScale = d3.scaleThreshold()
-    .domain([100000, 1000000, 10000000, 30000000, 100000000, 500000000])
-    .range(d3.schemeReds[7]);
+  function colorScale(property) {
+	  if (color=='red') {
+	   var color2 = 16711680 + 650*property;
+	  	console.log("color2 is: ",color2.toString(16))
+	  	var first = color2.toString(16).slice(0,6)
+	  	console.log("first is: ",first)
+		return "#"+ first;
+	}
+	else if (color=='blue') {
+	 var color2 = 65535 - 650*property;
+	  console.log("color2 is: ",color2.toString(16))
+	  var first = color2.toString(16).slice(0,4)
+	  console.log("first is: ",first)
+	  return "#00"+ first;
   }
-
+}
 
   // Load external data and boot
   var countyMap = new Map();
-  var help;
+  countyMap["Alamance"] = 44.7542844;
+  countyMap["Alexander"] = 44.6178155;
+  countyMap["Alleghany"] = 42.7970557;
+  countyMap["Anson"] = 37.4725786;
+  countyMap["Ashe"] = 47.5461773;
+  countyMap["Avery"] = 35.1823623;
+  countyMap["Beaufort"] = 42.655285;
+  countyMap["Bertie"] = 35.6436361;
+  countyMap["Bladen"] = 0.00207;
+  countyMap["Brunswick"] = 59.1436148;
+  countyMap["Buncombe"] = 51.0857986;
+  countyMap["Burke"] = 44.639269;
+  countyMap["Cabarrus"] = 58.8918113;
+  countyMap["Caldwell"] = 45.73148;
+  countyMap["Camden"] = 46.8757369;
+  countyMap["Carteret"] = 0.0405707;
+  countyMap["Caswell"] = 44.6492557;
+  countyMap["Catawba"] = 38.9682706;
+  countyMap["Chatham"] = 69.2925245;
+  countyMap["Cherokee"] = 38.5616326;
+  countyMap["Chowan"] = 0.00588;
+  countyMap["Clay"] = 38.9554169;
+  countyMap["Cleveland"] = 47.5119644;
+  countyMap["Columbus"] = 0;
+  countyMap["Craven"] = 36.2682924;
+  countyMap["Cumberland"] = 35.030651;
+  countyMap["Currituck"] = 44.8964312;
+  countyMap["Dare"] = 43.6906475;
+  countyMap["Davidson"] = 52.2736789;
+  countyMap["Davie"] = 62.5489183;
+  countyMap["Duplin"] = 0.00202;
+  countyMap["Durham"] = 37.8964206;
+  countyMap["Edgecombe"] = 38.4811194;
+  countyMap["Forsyth"] = 39.0668996;
+  countyMap["Franklin"] = 59.1538631;
+  countyMap["Gaston"] = 50.892173;
+  countyMap["Gates"] = 0;
+  countyMap["Graham"] = 0.0164623;
+  countyMap["Granville"] = 49.4127425;
+  countyMap["Greene"] = 43.1386036;
+  countyMap["Guilford"] = 0.00191;
+  countyMap["Halifax"] = 0;
+  countyMap["Harnett"] = 43.8122727;
+  countyMap["Haywood"] = 39.5245171;
+  countyMap["Henderson"] = 41.373301;
+  countyMap["Hertford"] = 36.0812224;
+  countyMap["Hoke"] = 0.00161;
+  countyMap["Hyde"] = 38.1148165;
+  countyMap["Iredell"] = 54.1436027;
+  countyMap["Haywood"] = 39.5245171;
+  countyMap["Henderson"] = 41.373301;
+  countyMap["Hertford"] = 36.0812224;
+  countyMap["Hoke"] = 0.00161;
+  countyMap["Hyde"] = 38.1148165;
+  countyMap["Iredell"] = 54.1436027;
+  countyMap["Jackson"] = 33.7750322;
+  countyMap["Johnston"] = 58.1089804;
+  countyMap["Jones"] = 38.5224825;
+  countyMap["Lee"] = 43.8004093;
+  countyMap["Lenoir"] = 39.3719173;
+  countyMap["Lincoln"] = 48.408831;
+  countyMap["Macon"] = 39.9662084;
+  countyMap["Madison"] = 38.2404333;
+  countyMap["Martin"] = 39.032188;
+  countyMap["McDowell"] = 38.4965717;
+  countyMap["Mecklenburg"] = 0.000888;
+  countyMap["Mitchell"] = 39.4078634;
+  countyMap["Montgomery"] = 38.5940731;
+  countyMap["Moore"] = 48.1672206;
+  countyMap["Nash"] = 41.5229521;
+  countyMap["Northampton"] = 37.3173335;
+  countyMap["Onslow"] = 32.327565;
+  countyMap["Orange"] = 24.4292859;
+  countyMap["Pamlico"] = 33.8871904;
+  countyMap["Pasquotank"] = 0.0015;
+  countyMap["Pender"] = 41.570986;
+  countyMap["Perquimans"] = 39.2710634;
+  countyMap["Person"] = 43.5782912;
+  countyMap["Pitt"] = 29.7670292;
+  countyMap["Polk"] = 33.7947949;
+  countyMap["Randolph"] = 41.1651074;
+  countyMap["Richmond"] = 36.3979321;
+  countyMap["Robeson"] = 0.00328;
+  countyMap["Rockingham"] = 0.00232;
+  countyMap["Rowan"] = 37.9517234;
+  countyMap["Rutherford"] = 40.6978802;
+  countyMap["Sampson"] = 0.00276;
+  countyMap["Scotland"] = 31.4247585;
+  countyMap["Stanly"] = 41.4132314;
+  countyMap["Stokes"] = 43.8710118;
+  countyMap["Orange"] = 54.1436027;
+  countyMap["Surry"] = 43.9019442;
+  countyMap["Swain"] = 29.4532482;
+  countyMap["Transylvania"] = 33.7423212;
+  countyMap["Tyrrell"] = 35.1684953;
+  countyMap["Union"] = 46.6461694;
+  countyMap["Vance"] = 33.9443783;
+  countyMap["Wake"] = 44.2057878;
+  countyMap["Warren"] = 32.4562508;
+  countyMap["Washington"] = 27.7812528;
+  countyMap["Watauga"] = 25.6238361;
+  countyMap["Wayne"] = 37.8610025;
+  countyMap["Wilkes"] = 42.5468845;
+  countyMap["Wilson"] = 0.000858;
+  countyMap["Yadkin"] = 39.5057094;
+  countyMap["Yancey"] = 45.707111;
+
+    // Load external data and boot
+    var countyMap2 = new Map();
+    countyMap2["Alamance"] = 1.411568059;
+    countyMap2["Alexander"] = 1.48204644;
+    countyMap2["Alleghany"] = 1.548355585;
+    countyMap2["Anson"] = 1.497635522;
+    countyMap2["Ashe"] = 1.470228941;
+    countyMap2["Avery"] = 1.794329553;
+    countyMap2["Beaufort"] = 1.625683347;
+    countyMap2["Bertie"] = 1.779791076;
+    countyMap2["Bladen"] = 1.768279747;
+    countyMap2["Brunswick"] = 1.240537687;
+    countyMap2["Buncombe"] = 1.458306905;
+    countyMap2["Burke"] = 1.35061095;
+    countyMap2["Cabarrus"] = 1.209478047;
+    countyMap2["Caldwell"] = 1.388934093;
+    countyMap2["Camden"] = 1.548752282;
+    countyMap2["Carteret"] = 1.486182293;
+    countyMap2["Caswell"] = 1.399379685;
+    countyMap2["Catawba"] = 1.702143678;
+    countyMap2["Chatham"] = 1.104230081;
+    countyMap2["Cherokee"] = 1.727052261;
+    countyMap2["Chowan"] = 1.549171371;
+    countyMap2["Clay"] = 1.821505376;
+    countyMap2["Cleveland"] = 1.365710248;
+    countyMap2["Columbus"] = 1.519132682;
+    countyMap2["Craven"] = 1.899485771;
+    countyMap2["Cumberland"] = 1.72813136;
+    countyMap2["Currituck"] = 1.610890249;
+    countyMap2["Dare"] = 1.830091175;
+    countyMap2["Davidson"] = 1.255058841;
+    countyMap2["Davie"] = 1.156335383;
+    countyMap2["Duplin"] = 1.077678571;
+    countyMap2["Durham"] = 1.94383783;
+    countyMap2["Edgecombe"] = 1.639648317;
+    countyMap2["Forsyth"] = 1.744176071;
+    countyMap2["Franklin"] = 1.144378655;
+    countyMap2["Gaston"] = 1.301837361;
+    countyMap2["Gates"] = 1.472732939;
+    countyMap2["Graham"] = 1.792152235;
+    countyMap2["Granville"] = 1.269301965;
+    countyMap2["Greene"] = 1.237715884;
+    countyMap2["Guilford"] = 1.706071018;
+    countyMap2["Halifax"] = 1.626691542;
+    countyMap2["Harnett"] = 1.322647178;
+    countyMap2["Haywood"] = 1.784940037;
+    countyMap2["Henderson"] = 1.695418809;
+    countyMap2["Hertford"] = 1.565228869;
+    countyMap2["Hoke"] = 1.592848519;
+    countyMap2["Hyde"] = 1.562455389;
+    countyMap2["Iredell"] = 1.306341981;
+    countyMap2["Jackson"] = 1.702609394;
+    countyMap2["Johnston"] = 1.187273649;
+    countyMap2["Jones"] = 1.818170331;
+    countyMap2["Lee"] = 1.407041985;
+    countyMap2["Lenoir"] = 1.651169157;
+    countyMap2["Lincoln"] = 1.474908565;
+    countyMap2["Macon"] = 1.74978163;
+    countyMap2["Madison"] = 1.842661658;
+    countyMap2["Martin"] = 1.782209437;
+    countyMap2["McDowell"] = 1.582152189;
+    countyMap2["Mecklenburg"] = 1.558258973;
+    countyMap2["Mitchell"] = 1.907632515;
+    countyMap2["Montgomery"] = 1.538209808;
+    countyMap2["Moore"] = 1.483863093;
+    countyMap2["Nash"] = 1.659162634;
+    countyMap2["Northampton"] = 1.672124084;
+    countyMap2["Onslow"] = 1.583535572;
+    countyMap2["Orange"] = 2.851136679;
+    countyMap2["Pamlico"] = 2.040227807;
+    countyMap2["Pasquotank"] = 2.185843028;
+    countyMap2["Pender"] = 1.594316597;
+    countyMap2["Perquimans"] = 1.738502332;
+    countyMap2["Person"] = 1.583702726;
+    countyMap2["Pitt"] = 2.078011739;
+    countyMap2["Polk"] = 2.022320198;
+    countyMap2["Randolph"] = 1.554614659;
+    countyMap2["Richmond"] = 1.639445653;
+    countyMap2["Robeson"] = 1.520127764;
+    countyMap2["Rockingham"] = 1.751736746;
+    countyMap2["Rowan"] = 1.733892806;
+    countyMap2["Rutherford"] = 1.537405466;
+    countyMap2["Sampson"] = 1.477404238;
+    countyMap2["Scotland"] = 1.746503885;
+    countyMap2["Stanly"] = 1.61771773;
+    countyMap2["Stokes"] = 1.550406698;
+    countyMap2["Surry"] = 1.441134483;
+    countyMap2["Swain"] = 2.240751069;
+    countyMap2["Transylvania"] = 2.03297954;
+    countyMap2["Tyrrell"] = 1.550896384;
+    countyMap2["Union"] = 1.525281188;
+    countyMap2["Vance"] = 4.395976184;
+    countyMap2["Wake"] = 0.584345111;
+    countyMap2["Warren"] = 1.957971282;
+    countyMap2["Washington"] = 2.435738383;
+    countyMap2["Watauga"] = 2.44929449;
+    countyMap2["Wayne"] = 1.529477197;
+    countyMap2["Wilkes"] = 1.486813577;
+    countyMap2["Wilson"] = 1.816567955;
+    countyMap2["Yadkin"] = 1.67642578;
+    countyMap2["Yancey"] = 1.679925003;
+
   d3.queue()
     .defer(d3.json, "https://raw.githubusercontent.com/matthewlombardo/HCIProject2/master/nc.geojson")
-    .defer(d3.csv, "https://raw.githubusercontent.com/matthewlombardo/HCIProject2/master/graph3TURNOUT.csv", (d) => {countyMap[d.COUNTY] = d.TURNOUT;})
+    .defer(d3.csv, "https://raw.githubusercontent.com/matthewlombardo/HCIProject2/master/graph3TURNOUT.csv", function(d) { data.set(d.code, +d.pop); })
 	.await(ready);
 
-	for (const [key, value] of countyMap.entries()) {
-	  console.log("pair: ",  key, value);
-	}
+	//d3.csv("https://raw.githubusercontent.com/matthewlombardo/HCIProject2/master/graph3TURNOUT.csv",(d) => {console.log(d) })
 
   function ready(error, topo) {
 
@@ -257,9 +476,12 @@ function makeMap1(color) {
         )
         // set the color of each county
         .attr("fill", function (d) {
-			console.log("let's see...", d.properties.NAME, countyMap[d.properties.NAME])
-			console.log("testing!", countyMap["Wayne"])
-          return colorScale(countyMap[d.properties.NAME]);
+			if (color=='red') {
+		  	return colorScale(countyMap[d.properties.NAME]);
+	  		}
+	  		else if (color=='blue') {
+		  		return colorScale(countyMap2[d.properties.NAME]);
+	  		}
         })
       }
 
@@ -267,65 +489,294 @@ function makeMap1(color) {
 </script>
 </div>
 
-<div style="float:right" id="rightMap">
-  <div class="dropdown">
-    <button onclick="myFunction2()" class="dropbtn">Please select map &#9660;</button>
-    <div id="myDropdown2" class="dropdown-content">
-      <a onclick="makeMap2('red')">Red Map 2</a>
-      <a onclick="makeMap2('blue')">Blue Map 2</a>
-      <a onclick="makeMap2('green')">Green Map 2</a>
-    </div>
+<div style="float:right">
+<div class="dropdown">
+  <button onclick="myFunction2()" class="dropbtn">Please select map!</button>
+  <div id="myDropdown2" class="dropdown-content">
+    <a href="#home" onclick=makeMap2('red')>Red Map</a>
+    <a href="#about" onclick=makeMap2('blue')>Blue Map</a>
   </div>
+</div>
 <script>
 function myFunction2() {
   document.getElementById("myDropdown2").classList.toggle("show");
 }
 
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
 </script>
-<p></p>
 
-<svg id="my_dataviz2" width="450" height="350"></svg>
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+<p></p>
+<!-- Create an element where the map will take place -->
+
+<svg id="my_dataviz2" width="600" height="350"></svg>
 <script>
 function makeMap2(color) {
-
   // The svg
   var svg = d3.select("#my_dataviz2")
-  //var svg2 = d3.select("svg2"),
+  //var svg = d3.select("svg"),
     width = +svg.attr("width"),
     height = +svg.attr("height");
 
   // Map and projection
   var path = d3.geoPath();
+
   var projection = d3.geoMercator()
-    .scale(70)
-    .center([0,20])
+  	.scale(3700)
+  	.center([-80,35])
     .translate([width / 2, height / 2]);
 
   // Data and color scale
   var data = d3.map();
-  if (color=='red') {
-  var colorScale = d3.scaleThreshold()
-    .domain([100000, 1000000, 10000000, 30000000, 100000000, 500000000])
-    .range(d3.schemeReds[7]);
-    }
-    else if (color=='blue') {
-    var colorScale = d3.scaleThreshold()
-    .domain([100000, 1000000, 10000000, 30000000, 100000000, 500000000])
-    .range(d3.schemeBlues[7]);
-    }
-    else if (color=='green') {
-    var colorScale = d3.scaleThreshold()
-    .domain([100000, 1000000, 10000000, 30000000, 100000000, 500000000])
-    .range(d3.schemeGreens[7]);
-    }
-
+  function colorScale(property) {
+	  if (color=='red') {
+	   var color2 = 16711680 + 650*property;
+	  	console.log("color2 is: ",color2.toString(16))
+	  	var first = color2.toString(16).slice(0,6)
+	  	console.log("first is: ",first)
+		return "#"+ first;
+	}
+	else if (color=='blue') {
+	 var color2 = 65535 - 650*property;
+	  console.log("color2 is: ",color2.toString(16))
+	  var first = color2.toString(16).slice(0,4)
+	  console.log("first is: ",first)
+	  return "#00"+ first;
+  }
+}
 
   // Load external data and boot
-  d3.queue()
-    .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
-    .defer(d3.csv, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world_population.csv", function(d) { data.set(d.code, +d.pop); })
-    .await(ready);
+  var countyMap = new Map();
+  countyMap["Alamance"] = 44.7542844;
+  countyMap["Alexander"] = 44.6178155;
+  countyMap["Alleghany"] = 42.7970557;
+  countyMap["Anson"] = 37.4725786;
+  countyMap["Ashe"] = 47.5461773;
+  countyMap["Avery"] = 35.1823623;
+  countyMap["Beaufort"] = 42.655285;
+  countyMap["Bertie"] = 35.6436361;
+  countyMap["Bladen"] = 0.00207;
+  countyMap["Brunswick"] = 59.1436148;
+  countyMap["Buncombe"] = 51.0857986;
+  countyMap["Burke"] = 44.639269;
+  countyMap["Cabarrus"] = 58.8918113;
+  countyMap["Caldwell"] = 45.73148;
+  countyMap["Camden"] = 46.8757369;
+  countyMap["Carteret"] = 0.0405707;
+  countyMap["Caswell"] = 44.6492557;
+  countyMap["Catawba"] = 38.9682706;
+  countyMap["Chatham"] = 69.2925245;
+  countyMap["Cherokee"] = 38.5616326;
+  countyMap["Chowan"] = 0.00588;
+  countyMap["Clay"] = 38.9554169;
+  countyMap["Cleveland"] = 47.5119644;
+  countyMap["Columbus"] = 0;
+  countyMap["Craven"] = 36.2682924;
+  countyMap["Cumberland"] = 35.030651;
+  countyMap["Currituck"] = 44.8964312;
+  countyMap["Dare"] = 43.6906475;
+  countyMap["Davidson"] = 52.2736789;
+  countyMap["Davie"] = 62.5489183;
+  countyMap["Duplin"] = 0.00202;
+  countyMap["Durham"] = 37.8964206;
+  countyMap["Edgecombe"] = 38.4811194;
+  countyMap["Forsyth"] = 39.0668996;
+  countyMap["Franklin"] = 59.1538631;
+  countyMap["Gaston"] = 50.892173;
+  countyMap["Gates"] = 0;
+  countyMap["Graham"] = 0.0164623;
+  countyMap["Granville"] = 49.4127425;
+  countyMap["Greene"] = 43.1386036;
+  countyMap["Guilford"] = 0.00191;
+  countyMap["Halifax"] = 0;
+  countyMap["Harnett"] = 43.8122727;
+  countyMap["Haywood"] = 39.5245171;
+  countyMap["Henderson"] = 41.373301;
+  countyMap["Hertford"] = 36.0812224;
+  countyMap["Hoke"] = 0.00161;
+  countyMap["Hyde"] = 38.1148165;
+  countyMap["Iredell"] = 54.1436027;
+  countyMap["Haywood"] = 39.5245171;
+  countyMap["Henderson"] = 41.373301;
+  countyMap["Hertford"] = 36.0812224;
+  countyMap["Hoke"] = 0.00161;
+  countyMap["Hyde"] = 38.1148165;
+  countyMap["Iredell"] = 54.1436027;
+  countyMap["Jackson"] = 33.7750322;
+  countyMap["Johnston"] = 58.1089804;
+  countyMap["Jones"] = 38.5224825;
+  countyMap["Lee"] = 43.8004093;
+  countyMap["Lenoir"] = 39.3719173;
+  countyMap["Lincoln"] = 48.408831;
+  countyMap["Macon"] = 39.9662084;
+  countyMap["Madison"] = 38.2404333;
+  countyMap["Martin"] = 39.032188;
+  countyMap["McDowell"] = 38.4965717;
+  countyMap["Mecklenburg"] = 0.000888;
+  countyMap["Mitchell"] = 39.4078634;
+  countyMap["Montgomery"] = 38.5940731;
+  countyMap["Moore"] = 48.1672206;
+  countyMap["Nash"] = 41.5229521;
+  countyMap["Northampton"] = 37.3173335;
+  countyMap["Onslow"] = 32.327565;
+  countyMap["Orange"] = 24.4292859;
+  countyMap["Pamlico"] = 33.8871904;
+  countyMap["Pasquotank"] = 0.0015;
+  countyMap["Pender"] = 41.570986;
+  countyMap["Perquimans"] = 39.2710634;
+  countyMap["Person"] = 43.5782912;
+  countyMap["Pitt"] = 29.7670292;
+  countyMap["Polk"] = 33.7947949;
+  countyMap["Randolph"] = 41.1651074;
+  countyMap["Richmond"] = 36.3979321;
+  countyMap["Robeson"] = 0.00328;
+  countyMap["Rockingham"] = 0.00232;
+  countyMap["Rowan"] = 37.9517234;
+  countyMap["Rutherford"] = 40.6978802;
+  countyMap["Sampson"] = 0.00276;
+  countyMap["Scotland"] = 31.4247585;
+  countyMap["Stanly"] = 41.4132314;
+  countyMap["Stokes"] = 43.8710118;
+  countyMap["Orange"] = 54.1436027;
+  countyMap["Surry"] = 43.9019442;
+  countyMap["Swain"] = 29.4532482;
+  countyMap["Transylvania"] = 33.7423212;
+  countyMap["Tyrrell"] = 35.1684953;
+  countyMap["Union"] = 46.6461694;
+  countyMap["Vance"] = 33.9443783;
+  countyMap["Wake"] = 44.2057878;
+  countyMap["Warren"] = 32.4562508;
+  countyMap["Washington"] = 27.7812528;
+  countyMap["Watauga"] = 25.6238361;
+  countyMap["Wayne"] = 37.8610025;
+  countyMap["Wilkes"] = 42.5468845;
+  countyMap["Wilson"] = 0.000858;
+  countyMap["Yadkin"] = 39.5057094;
+  countyMap["Yancey"] = 45.707111;
 
+    // Load external data and boot
+    var countyMap2 = new Map();
+    countyMap2["Alamance"] = 1.411568059;
+    countyMap2["Alexander"] = 1.48204644;
+    countyMap2["Alleghany"] = 1.548355585;
+    countyMap2["Anson"] = 1.497635522;
+    countyMap2["Ashe"] = 1.470228941;
+    countyMap2["Avery"] = 1.794329553;
+    countyMap2["Beaufort"] = 1.625683347;
+    countyMap2["Bertie"] = 1.779791076;
+    countyMap2["Bladen"] = 1.768279747;
+    countyMap2["Brunswick"] = 1.240537687;
+    countyMap2["Buncombe"] = 1.458306905;
+    countyMap2["Burke"] = 1.35061095;
+    countyMap2["Cabarrus"] = 1.209478047;
+    countyMap2["Caldwell"] = 1.388934093;
+    countyMap2["Camden"] = 1.548752282;
+    countyMap2["Carteret"] = 1.486182293;
+    countyMap2["Caswell"] = 1.399379685;
+    countyMap2["Catawba"] = 1.702143678;
+    countyMap2["Chatham"] = 1.104230081;
+    countyMap2["Cherokee"] = 1.727052261;
+    countyMap2["Chowan"] = 1.549171371;
+    countyMap2["Clay"] = 1.821505376;
+    countyMap2["Cleveland"] = 1.365710248;
+    countyMap2["Columbus"] = 1.519132682;
+    countyMap2["Craven"] = 1.899485771;
+    countyMap2["Cumberland"] = 1.72813136;
+    countyMap2["Currituck"] = 1.610890249;
+    countyMap2["Dare"] = 1.830091175;
+    countyMap2["Davidson"] = 1.255058841;
+    countyMap2["Davie"] = 1.156335383;
+    countyMap2["Duplin"] = 1.077678571;
+    countyMap2["Durham"] = 1.94383783;
+    countyMap2["Edgecombe"] = 1.639648317;
+    countyMap2["Forsyth"] = 1.744176071;
+    countyMap2["Franklin"] = 1.144378655;
+    countyMap2["Gaston"] = 1.301837361;
+    countyMap2["Gates"] = 1.472732939;
+    countyMap2["Graham"] = 1.792152235;
+    countyMap2["Granville"] = 1.269301965;
+    countyMap2["Greene"] = 1.237715884;
+    countyMap2["Guilford"] = 1.706071018;
+    countyMap2["Halifax"] = 1.626691542;
+    countyMap2["Harnett"] = 1.322647178;
+    countyMap2["Haywood"] = 1.784940037;
+    countyMap2["Henderson"] = 1.695418809;
+    countyMap2["Hertford"] = 1.565228869;
+    countyMap2["Hoke"] = 1.592848519;
+    countyMap2["Hyde"] = 1.562455389;
+    countyMap2["Iredell"] = 1.306341981;
+    countyMap2["Jackson"] = 1.702609394;
+    countyMap2["Johnston"] = 1.187273649;
+    countyMap2["Jones"] = 1.818170331;
+    countyMap2["Lee"] = 1.407041985;
+    countyMap2["Lenoir"] = 1.651169157;
+    countyMap2["Lincoln"] = 1.474908565;
+    countyMap2["Macon"] = 1.74978163;
+    countyMap2["Madison"] = 1.842661658;
+    countyMap2["Martin"] = 1.782209437;
+    countyMap2["McDowell"] = 1.582152189;
+    countyMap2["Mecklenburg"] = 1.558258973;
+    countyMap2["Mitchell"] = 1.907632515;
+    countyMap2["Montgomery"] = 1.538209808;
+    countyMap2["Moore"] = 1.483863093;
+    countyMap2["Nash"] = 1.659162634;
+    countyMap2["Northampton"] = 1.672124084;
+    countyMap2["Onslow"] = 1.583535572;
+    countyMap2["Orange"] = 2.851136679;
+    countyMap2["Pamlico"] = 2.040227807;
+    countyMap2["Pasquotank"] = 2.185843028;
+    countyMap2["Pender"] = 1.594316597;
+    countyMap2["Perquimans"] = 1.738502332;
+    countyMap2["Person"] = 1.583702726;
+    countyMap2["Pitt"] = 2.078011739;
+    countyMap2["Polk"] = 2.022320198;
+    countyMap2["Randolph"] = 1.554614659;
+    countyMap2["Richmond"] = 1.639445653;
+    countyMap2["Robeson"] = 1.520127764;
+    countyMap2["Rockingham"] = 1.751736746;
+    countyMap2["Rowan"] = 1.733892806;
+    countyMap2["Rutherford"] = 1.537405466;
+    countyMap2["Sampson"] = 1.477404238;
+    countyMap2["Scotland"] = 1.746503885;
+    countyMap2["Stanly"] = 1.61771773;
+    countyMap2["Stokes"] = 1.550406698;
+    countyMap2["Surry"] = 1.441134483;
+    countyMap2["Swain"] = 2.240751069;
+    countyMap2["Transylvania"] = 2.03297954;
+    countyMap2["Tyrrell"] = 1.550896384;
+    countyMap2["Union"] = 1.525281188;
+    countyMap2["Vance"] = 4.395976184;
+    countyMap2["Wake"] = 0.584345111;
+    countyMap2["Warren"] = 1.957971282;
+    countyMap2["Washington"] = 2.435738383;
+    countyMap2["Watauga"] = 2.44929449;
+    countyMap2["Wayne"] = 1.529477197;
+    countyMap2["Wilkes"] = 1.486813577;
+    countyMap2["Wilson"] = 1.816567955;
+    countyMap2["Yadkin"] = 1.67642578;
+    countyMap2["Yancey"] = 1.679925003;
+
+  d3.queue()
+    .defer(d3.json, "https://raw.githubusercontent.com/matthewlombardo/HCIProject2/master/nc.geojson")
+    .defer(d3.csv, "https://raw.githubusercontent.com/matthewlombardo/HCIProject2/master/graph3TURNOUT.csv", function(d) { data.set(d.code, +d.pop); })
+	.await(ready);
+
+	//d3.csv("https://raw.githubusercontent.com/matthewlombardo/HCIProject2/master/graph3TURNOUT.csv",(d) => {console.log(d) })
 
   function ready(error, topo) {
 
@@ -339,22 +790,22 @@ function makeMap2(color) {
         .attr("d", d3.geoPath()
           .projection(projection)
         )
-        // set the color of each country
+        // set the color of each county
         .attr("fill", function (d) {
-			console.log("properties?", d.properties)
-          d.total = data.get(d.id) || 0;
-		  console.log("data.get(d.id)",data.get(d.id))
-		  console.log("d.total",d.total)
-
-          return colorScale(d.total);
+			if (color=='red') {
+		  	return colorScale(countyMap[d.properties.NAME]);
+	  		}
+	  		else if (color=='blue') {
+		  		return colorScale(countyMap2[d.properties.NAME]);
+	  		}
         })
       }
 
 }
 </script>
 </div>
-
 <hr style="clear:both;">
+
 
 
 <p><!-- Blank so button formats correctly --> </p>
@@ -365,29 +816,29 @@ function makeMap2(color) {
 
 <h2>Part II: Voting History & Demographic Information</h2>
 <p>
-  We began our analysis with the topic of voter demographic information and voter's registered party for the 2020 
-  General Election in North Carolina. With findings from articles that state the discrepancies in voter turnout rates between different 
+  We began our analysis with the topic of voter demographic information and voter's registered party for the 2020
+  General Election in North Carolina. With findings from articles that state the discrepancies in voter turnout rates between different
   demographic groups, we were interested to see if this applied to North Carolina too.
 </p>
 <p>
-  We chose three demographic variables (age, gender, and race) and compared the number of voters in each of the 
-  sub-categories of a variable. For reference, and to make the data even more interesting, we included data 
-  regarding registered political party.  In order for ease of comparison between the categories, we used a stacked 
-  bar graph that allows for quick comprehension of the data. 
+  We chose three demographic variables (age, gender, and race) and compared the number of voters in each of the
+  sub-categories of a variable. For reference, and to make the data even more interesting, we included data
+  regarding registered political party.  In order for ease of comparison between the categories, we used a stacked
+  bar graph that allows for quick comprehension of the data.
 </p>
 <p>
   What we found in relation to age groups was a significant clustering of high votes between the ages of 20 to 60.
-  In contrast, we see the numbers drop for individuals in their 70s and 80s.  While we might explain that away with the 
+  In contrast, we see the numbers drop for individuals in their 70s and 80s.  While we might explain that away with the
   fact that here are many fewer of these voters, we also observe low numbers of votes for individuals in their early adulthood.
-  These low numbers could be due to a number of factors, such as inaccessibility to transportation to polling booths, 
+  These low numbers could be due to a number of factors, such as inaccessibility to transportation to polling booths,
   education levels, and difficulty in voter registration.
 </p>
 <p>
-  In terms of voter sex and turnout rate, we didn’t find much that was surprising, as there seemed 
-  to be a smaller margin of difference for the total votes between the male and female voters. What intrigued us most 
-  was the data on race and voter turnout rates. The race of the voters is indicated on the X-axis of the plot; the key is 
-  below. There is a huge difference between the amount of White and Black voters. Even taking into account the general 
-  race demographics of North Carolina (reported to be 63% White and 21% Black), we can observe a 
+  In terms of voter sex and turnout rate, we didn’t find much that was surprising, as there seemed
+  to be a smaller margin of difference for the total votes between the male and female voters. What intrigued us most
+  was the data on race and voter turnout rates. The race of the voters is indicated on the X-axis of the plot; the key is
+  below. There is a huge difference between the amount of White and Black voters. Even taking into account the general
+  race demographics of North Carolina (reported to be 63% White and 21% Black), we can observe a
   drastically low turnout rate for Black voters.
 </p>
 
@@ -778,13 +1229,13 @@ d3.csv(filename, function(data) {
 
 <h2>Part III: Distance to Polling Places</h2>
 <p>
-  Finally, we conducted a spatial analysis on distance to polling places. Through the voter registration database, 
-  we obtained the addresses of each voter in North Carolina, and through the polling locations database, we retrieved the 
+  Finally, we conducted a spatial analysis on distance to polling places. Through the voter registration database,
+  we obtained the addresses of each voter in North Carolina, and through the polling locations database, we retrieved the
   locations of all polling booths across the counties.  We could then geocode those locations into latitude and longitude,
   and calculate the distance between a voter's home and their polling center.
 </p>
 <p>
-  As we found during our analysis, there are significant problems with the quality of this data.  Using open source 
+  As we found during our analysis, there are significant problems with the quality of this data.  Using open source
   methods and data sets, we could only successfully geocode roughly two-thirds of total voters in the state.  Many
   voters had addresses that were incomplete or did not match with geospatial data sets from other agencies, such
   as the US Census Bureau.  Even some polling places had addresses that were incorrect or incomplete.  The first
@@ -945,7 +1396,7 @@ function bubbler1(scheme) {
   Through this project, we had the fascinating experience of examining social injustice and accessibility issues in the scope of elections.
   The current analysis just scratches the surface, and prompts us to ask questions for further study.
 </p>
-<p><span style="font-weight: bold">How are individuals in various groups that we haven’t explore (socioeconomic, educational) affected by 
+<p><span style="font-weight: bold">How are individuals in various groups that we haven’t explore (socioeconomic, educational) affected by
   voting accessibility?</span> <!-- MORE -->
 </p>
 <p><span style="font-weight: bold">How would other states look different from North Carolina?</span><!-- MORE -->
@@ -953,11 +1404,11 @@ function bubbler1(scheme) {
 <p><span style="font-weight: bold">Are there correllations between political bents and voter inequality?</span>
 </p>
 <p>
-  Answering any one of these questions is complex.  Even harder is proposing solutions to combat and ameliorate these issues so that 
-  future elections aren’t tainted by the same problems that are prevalent now.  This project gave us an excellent opportunity to 
-  become more educated about social injustice issues revolving the election, how marginalized populations are affected, and what 
-  consequences these issues can pose. With this insight, we hope to be more cognizant and considerate in our designing practices 
-  going forward. 
+  Answering any one of these questions is complex.  Even harder is proposing solutions to combat and ameliorate these issues so that
+  future elections aren’t tainted by the same problems that are prevalent now.  This project gave us an excellent opportunity to
+  become more educated about social injustice issues revolving the election, how marginalized populations are affected, and what
+  consequences these issues can pose. With this insight, we hope to be more cognizant and considerate in our designing practices
+  going forward.
 </p>
 
 <hr style="clear: both;">
