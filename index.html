@@ -172,11 +172,11 @@ body {
 
 <div style="float:left" id="leftMap">
   <div class="dropdown">
-    <button onclick="myFunction1()" class="dropbtn">Please select map!</button>
+    <button onclick="myFunction1()" class="dropbtn">Please select map &#9660;</button>
     <div id="myDropdown" class="dropdown-content">
-      <a href="#home" onclick=makeMap1('red')>Red Map</a>
-      <a href="#about" onclick=makeMap1('blue')>Blue Map</a>
-      <a href="#contact" onclick=makeMap1('green')>Green Map</a>
+      <a onclick="makeMap1('red')">Red Map</a>
+      <a onclick="makeMap1('blue')">Blue Map</a>
+      <a onclick="makeMap1('green')">Green Map</a>
     </div>
   </div>
 <script>
@@ -268,11 +268,11 @@ function makeMap1(color) {
 
 <div style="float:right" id="rightMap">
   <div class="dropdown">
-    <button onclick="myFunction2()" class="dropbtn">Please select map!</button>
+    <button onclick="myFunction2()" class="dropbtn">Please select map &#9660;</button>
     <div id="myDropdown2" class="dropdown-content">
-      <a href="#home" onclick=makeMap2('red')>Red Map 2</a>
-      <a href="#about" onclick=makeMap2('blue')>Blue Map 2</a>
-      <a href="#contact" onclick=makeMap2('green')>Green Map 2</a>
+      <a onclick="makeMap2('red')">Red Map 2</a>
+      <a onclick="makeMap2('blue')">Blue Map 2</a>
+      <a onclick="makeMap2('green')">Green Map 2</a>
     </div>
   </div>
 <script>
@@ -456,11 +456,11 @@ function makeMap2(color) {
 
 <div style="float:left; clear: both">
 <div class="dropdown">
-  <button onclick="myFunction3()" class="dropbtn">Please select demographic:</button>
+  <button onclick="myFunction3()" class="dropbtn">Please select demographic &#9660;</button>
   <div id="myDropdown3" class="dropdown-content">
-    <a href="#home" onclick=colorGraph1('age')>Age Group</a>
-    <a href="#about" onclick=colorGraph1('sex')>Sex</a>
-    <a href="#contact" onclick=colorGraph1('race')>Race</a>
+    <a onclick="colorGraph1('age')">Age Group</a>
+    <a onclick="colorGraph1('sex')">Sex</a>
+    <a onclick="colorGraph1('race')">Race</a>
   </div>
 </div>
 <script>
@@ -613,11 +613,11 @@ d3.csv(filename, function(data) {
 
 <div style="float:right">
 <div class="dropdown">
-  <button onclick="myFunction4()" class="dropbtn">Please select demographic:</button>
+  <button onclick="myFunction4()" class="dropbtn">Please select demographic &#9660;</button>
   <div id="myDropdown4" class="dropdown-content">
-    <a href="#" onclick=colorGraph2('age')>Age Group</a>
-    <a href="#" onclick=colorGraph2('sex')>Sex</a>
-    <a href="#" onclick=colorGraph2('race')>Race</a>
+    <a onclick="colorGraph2('age')">Age Group</a>
+    <a onclick="colorGraph2('sex')">Sex</a>
+    <a onclick="colorGraph2('race')">Race</a>
   </div>
 </div>
 <script>
@@ -802,10 +802,10 @@ d3.csv(filename, function(data) {
 <!-- Bubble Chart -->
 <div id="bubbleCharts">
 <div class="dropdown">
-  <button onclick="myFunction5()" class="dropbtn">Please select statistic:</button>
+  <button onclick="myFunction5()" class="dropbtn">Please select statistic &#9660;</button>
   <div id="myDropdown5" class="dropdown-content">
-    <a href="#home" onclick=bubbler1('distance')>Average Distance to Polling Place</a>
-    <a href="#about" onclick=bubbler1('voter')>Voter Turnout</a>
+    <a onclick="bubbler1('distance')">Average Distance to Polling Place</a>
+    <a onclick="bubbler1('voter')">Voter Turnout</a>
   </div>
 </div>
 
