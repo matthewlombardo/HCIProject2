@@ -107,7 +107,7 @@ body {
 <script>
   $(document).ready(function() {
   makeMap1('red')
-  makeMap2('red')
+  makeMap2('blue')
   colorGraph1('race')
   colorGraph2('age')
   bubbler1('distance')
@@ -593,8 +593,8 @@ d3.csv(filename, function(data) {
   <div class="dropdown">
     <button onclick="myFunction1()" class="dropbtn">Please select map &#9660;</button>
     <div id="myDropdown" class="dropdown-content">
-      <a onclick="makeMap1('red')">Red Map</a>
-      <a onclick="makeMap1('blue')">Blue Map</a>
+      <a onclick=makeMap2('red')>Voter Turnout</a>
+      <a onclick=makeMap2('blue')>% of residents registered</a>
     </div>
   </div>
 <script>
@@ -910,8 +910,8 @@ function makeMap1(color) {
 <div class="dropdown">
   <button onclick="myFunction2()" class="dropbtn">Please select map &#9660;</button>
   <div id="myDropdown2" class="dropdown-content">
-    <a onclick=makeMap2('red')>Red Map</a>
-    <a onclick=makeMap2('blue')>Blue Map</a>
+    <a onclick=makeMap2('red')>Voter Turnout</a>
+    <a onclick=makeMap2('blue')>% of residents registered</a>
   </div>
 </div>
 <script>
